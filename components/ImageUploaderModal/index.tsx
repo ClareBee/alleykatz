@@ -17,13 +17,15 @@ const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
 
 const ImageModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedImg, setSelectedImg] = useState(null);
+  const [selectedImg, setSelectedImg] = useState<File | null>(null);
   // move to redux
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleOnChange = (e) => {
-    setSelectedImg(e.target.files[0]);
+  const handleOnChange = (e:  React.ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    if(!target?.files) { return; }
+    setSelectedImg(target.files[0]);
   };
 
   const uploadImage = async (e: MouseEvent<HTMLButtonElement>) => {
