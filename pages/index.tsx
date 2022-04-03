@@ -1,11 +1,18 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
-import PostsContainer from '../components/Posts/PostsContainer';
-import styles from '../styles/Home.module.scss';
+import Posts from '../components/Posts';
+import ImageUploaderModal from '../components/ImageUploaderModal';
+import { Flex } from '@chakra-ui/react';
 
 const Home: NextPage = () => {
-  return <PostsContainer />;
+  return (
+    <>
+      <Posts />
+      <Flex width="100%" alignItems="center" justifyContent="flex-end" marginBottom="100px" marginTop="50px">
+      <ImageUploaderModal />
+
+      </Flex>
+    </>
+  );
 };
 
 export default Home;
