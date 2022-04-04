@@ -18,7 +18,7 @@ const Layout: React.FunctionComponent = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Box as="main" bg="white" w="100%" p="0 20px" flexGrow={1}>
+      <Box as="main" bg="white" w="100%" p="20px" flexGrow={1}>
         {children}
       </Box>
       <Footer />
