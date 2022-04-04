@@ -10,6 +10,7 @@ import {
   useDisclosure,
   Button,
   IconButton,
+  Box,
 } from '@chakra-ui/react';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
 
@@ -22,9 +23,11 @@ const ImageModal = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleOnChange = (e:  React.ChangeEvent) => {
+  const handleOnChange = (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    if(!target?.files) { return; }
+    if (!target?.files) {
+      return;
+    }
     setSelectedImg(target.files[0]);
   };
 
@@ -74,9 +77,14 @@ const ImageModal = () => {
         isLoading={isLoading}
         color="red"
         aria-label="Upload image of cat"
-        icon={<BsFillPlusCircleFill />}
+        icon={<BsFillPlusCircleFill height="100px" />}
         size="lg"
         onClick={onOpen}
+        position="fixed"
+        right="20px"
+        bottom="20px"
+        width="100px"
+        height="100px"
       />
 
       <Modal isOpen={isOpen} onClose={onClose}>

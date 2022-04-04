@@ -2,16 +2,14 @@ import type { NextPage } from 'next';
 import Posts from '../components/Posts';
 import ImageUploaderModal from '../components/ImageUploaderModal';
 import { Flex } from '@chakra-ui/react';
+import { PostsProps } from '../ts/interfaces';
 
 const POSTS_URL = 'https://api.thecatapi.com/v1/images'
-interface Props {
-  posts: any
-}
 
-const Home: NextPage<Props> = ({ posts }) => {
+const Home: NextPage<PostsProps> = ({ posts, favourites }) => {
   return (
     <>
-      <Posts posts={posts} />
+      <Posts posts={posts} favourites={favourites} />
       <Flex width="100%" alignItems="center" justifyContent="flex-end" marginBottom="100px" marginTop="50px">
       <ImageUploaderModal />
 
@@ -38,7 +36,11 @@ export async function getServerSideProps() {
 
   const posts = await res.json()
 
-  return { props: { posts } }
+  const res2 = await fetch('https://api.thecatapi.com/v1/favourites?sub_id=123', {
+    headers: requestHeaders
+  })
+  const favourites = await res2.json()
+  return { props: { posts, favourites } }
 }
 
 export default Home;
