@@ -4,18 +4,33 @@ import Image from 'next/image';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { CatPostProps } from '../../ts/interfaces';
 import VoteButtons from './VoteButtons';
+import { Vote } from '../../ts/types/types';
 
 const FAVOURITE_URL = 'https://api.thecatapi.com/v1/favourites';
 
 const CatPost: React.FC<CatPostProps> = ({
   post: { url: imageUrl, id },
   favourite,
+  votes
 }) => {
   console.log('favourite_id', favourite);
   const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const calculateVote = (votes: Vote[]) => {
+    console.log('id', id)
+    let total = 0;
+    votes.map(vote => {
+      if(vote.image_id === id && vote.value === 1) {
+        total += 1
+      }
+      if(vote.image_id === id && vote.value === 0) {
+        total -= 1
+      }
+    })
+    return total
+  }
   const handleUnfavourite = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!favourite?.id) {
@@ -107,7 +122,8 @@ const CatPost: React.FC<CatPostProps> = ({
           letterSpacing="wide"
           color="brand.700"
         >
-          Score {error ? 'error' : 'success'}
+          Score: 
+          {votes && calculateVote(votes)}
         </Text>
         <Stack
           direction="row"
@@ -128,8 +144,9 @@ const CatPost: React.FC<CatPostProps> = ({
               onClick={(e) => handleUnfavourite(e)}
             />
           )}
-          <VoteButtons />
+          <VoteButtons imageId={id} />
         </Stack>
+        {error ? 'error' : 'success'}
       </Stack>
     </Box>
   );
