@@ -6,10 +6,10 @@ import { PostsProps } from '../ts/interfaces';
 
 const POSTS_URL = 'https://api.thecatapi.com/v1/images'
 
-const Home: NextPage<PostsProps> = ({ posts, favourites }) => {
+const Home: NextPage<PostsProps> = ({ posts, favourites, votes }) => {
   return (
     <>
-      <Posts posts={posts} favourites={favourites} />
+      <Posts posts={posts} favourites={favourites} votes={votes} />
       <Flex width="100%" alignItems="center" justifyContent="flex-end" marginBottom="100px" marginTop="50px">
       <ImageUploaderModal />
 
@@ -39,8 +39,14 @@ export async function getServerSideProps() {
   const res2 = await fetch('https://api.thecatapi.com/v1/favourites?sub_id=123', {
     headers: requestHeaders
   })
+
+  const res3 = await fetch('https://api.thecatapi.com/v1/votes', {
+    headers: requestHeaders
+  })
   const favourites = await res2.json()
-  return { props: { posts, favourites } }
+
+  const votes = await res3.json()
+  return { props: { posts, favourites, votes } }
 }
 
 export default Home;

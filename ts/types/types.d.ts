@@ -14,3 +14,12 @@ export type Favourite = {
   sub_id?: string;
   user_id?: string;
 };
+
+export type Vote = {
+  country_code?: string;
+  created_at: string;
+  id: number;
+  image_id: string;
+  sub_id?: string;
+  value: 0 | 1;
+};

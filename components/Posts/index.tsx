@@ -3,18 +3,19 @@ import { PostsProps } from '../../ts/interfaces';
 import { Favourite, Post } from '../../ts/types/types';
 import CatPost from '../Post';
 
-const Posts: React.FC<PostsProps> = ({ posts, favourites }) => {
+const Posts: React.FC<PostsProps> = ({ posts, favourites, votes }) => {
+  console.log('votes', votes)
   console.log('posts', posts);
   console.log('favourites', favourites);
   const formatPosts = (posts: Post[]) => {
     return posts.map((post) => {
-      let favourite = favourites.find((fav: Favourite) =>
+      let favourite = favourites && favourites.find((fav: Favourite) =>
         fav.image_id === post.id ? fav : null
       );
       console.log('fav', favourite);
       return (
         <Flex key={post.id} alignItems="center" justifyContent="center">
-          <CatPost post={post} key={post.id} favourite={favourite} />
+          <CatPost post={post} key={post.id} favourite={favourite} votes={votes} />
         </Flex>
       );
     });
