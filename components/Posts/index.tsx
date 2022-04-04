@@ -1,20 +1,9 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
+import { PostsProps } from '../../ts/interfaces';
+import { Post } from '../../ts/types/types';
 import CatPost from '../Post';
 
-type Post = {
-  height: Number;
-  id: string;
-  url: string;
-  width: Number;
-};
-
-interface Props {
-  posts: [Post]
-}
-
-// x
-
-const Posts: React.FC<Props> = ({posts }) => {
+const Posts: React.FC<PostsProps> = ({posts }) => {
   console.log('posts', posts)
   return (
     <SimpleGrid columns={{ sm: 2, md: 3 }} spacing="40px">
