@@ -3,6 +3,8 @@ import { useState, MouseEvent } from 'react';
 import Posts from '../components/Posts';
 import ImageUploaderModal from '../components/ImageUploaderModal';
 import { Flex, Button } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { route } from 'next/dist/server/router';
 
 const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
 
@@ -11,6 +13,7 @@ const Update: NextPage = () => {
   // move to redux
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleOnChange = (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
@@ -30,7 +33,7 @@ const Update: NextPage = () => {
     const formData = new FormData();
     formData.append('file', selectedImg);
 
-    // move to service
+    // TODO: move to service
     try {
       const requestHeaders: HeadersInit = new Headers();
       const key = process.env.NEXT_PUBLIC_API_KEY;
@@ -49,6 +52,7 @@ const Update: NextPage = () => {
       }).then((res) => {
         console.log(res);
         setIsLoading(false);
+        router.push('/');
       });
     } catch (error) {
       console.log(error);

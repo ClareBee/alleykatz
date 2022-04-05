@@ -1,6 +1,6 @@
 import { Box, Flex, Text,  Link as ChakraLink } from '@chakra-ui/react';
 import Link from 'next/link';
-import { FaCamera, FaCat } from 'react-icons/fa';
+import { FaCamera } from 'react-icons/fa';
 import Logo from './Logo';
 import AppMenu from './Menu';
 

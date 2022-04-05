@@ -7,13 +7,15 @@ export interface PostsProps {
   postsError?: string
   favouritesError?: string
   votesError?: string
+  mutateFavourites: () => {}
 }
 
 export interface CatPostProps {
   post: Post,
   key?: string,
   favourite?: Favourite,
-  votes: Vote[] | []
+  votes: Vote[] | [],
+  mutateFavourites: () => {}
 }
 
 export interface VoteProps {

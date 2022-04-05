@@ -7,7 +7,7 @@ import { getPosts, POSTS_URL } from '../services/posts';
 import { getFavourites, FAVOURITE_URL } from '../services/favourite';
 import { getVotes, VOTES_URL } from '../services/vote';
 import { fetcher } from '../services/fetcher';
-import useSWR from 'swr';
+import useSWR, { SWRConfig } from 'swr';
 
 const Home: NextPage<PostsProps> = ({
   posts: postsProps,
@@ -20,19 +20,20 @@ const Home: NextPage<PostsProps> = ({
   const { data: posts, error: postsSWRError } = useSWR(
     `${POSTS_URL}?limit=100&include_vote=1&include_favourite=1`,
     fetcher,
-    { fallbackData: postsProps, refreshInterval: 20000 }
+    { fallbackData: postsProps, refreshInterval: 30000,
+    }
   );
-  const { data: favourites, error: favouritesSWRError } = useSWR(
+  const { data: favourites, mutate: mutateFavourites, error: favouritesSWRError } = useSWR(
     FAVOURITE_URL,
     fetcher,
     { fallbackData: favouritesProps }
   );
   const { data: votes, error: votesSWRError } = useSWR(VOTES_URL, fetcher, {
-    fallbackData: favouritesProps,
-    refreshInterval: 10000,
+    fallbackData: votesProps,
+    refreshInterval: 30000,
   });
   return (
-    <>
+    <SWRConfig value={{ provider: () => new Map()}}>
       <Text>
         {postsError} {votesError} {favouritesError}
       </Text>
@@ -40,7 +41,7 @@ const Home: NextPage<PostsProps> = ({
         {postsSWRError} {votesSWRError} {favouritesSWRError}
       </Text>
 
-      <Posts posts={posts} favourites={favourites} votes={votes} />
+      <Posts posts={posts} favourites={favourites} votes={votes} mutateFavourites={mutateFavourites} />
       <Flex
         width="100%"
         alignItems="center"
@@ -50,7 +51,7 @@ const Home: NextPage<PostsProps> = ({
       >
         <ImageUploaderModal />
       </Flex>
-    </>
+    </SWRConfig>
   );
 };
 

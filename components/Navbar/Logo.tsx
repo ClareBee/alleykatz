@@ -3,7 +3,7 @@ import { Box, BoxProps, Text, Link as ChakraLink } from "@chakra-ui/react"
 import Link from "next/link"
 import { FaCat } from "react-icons/fa"
 
-const Logo: React.FC<BoxProps> = (props) => {
+const Logo: React.FC<BoxProps> = () => {
   return (
     <Box fontSize="3xl">
       <Link href="/" passHref>
