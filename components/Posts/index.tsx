@@ -8,7 +8,8 @@ const Posts: React.FC<PostsProps> = ({ posts, favourites, votes }) => {
   console.log('posts', posts);
   console.log('favourites', favourites);
   const formatPosts = (posts: Post[]) => {
-    return posts.map((post) => {
+    console.log('posts', posts)
+    return posts?.map((post) => {
       let favourite = favourites && favourites.find((fav: Favourite) =>
         fav.image_id === post.id ? fav : null
       );

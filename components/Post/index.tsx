@@ -6,7 +6,6 @@ import { CatPostProps } from '../../ts/interfaces';
 import VoteButtons from './VoteButtons';
 import { Vote } from '../../ts/types/types';
 
-const FAVOURITE_URL = 'https://api.thecatapi.com/v1/favourites';
 
 const CatPost: React.FC<CatPostProps> = ({
   post: { url: imageUrl, id },
@@ -21,7 +20,7 @@ const CatPost: React.FC<CatPostProps> = ({
   const calculateVote = (votes: Vote[]) => {
     console.log('id', id)
     let total = 0;
-    votes.map(vote => {
+    votes?.map(vote => {
       if(vote.image_id === id && vote.value === 1) {
         total += 1
       }
