@@ -1,7 +1,7 @@
 import { Post } from './../ts/types/types.d';
 import { setBaseHeaders } from './headers';
 
-const POSTS_URL = 'https://api.thecatapi.com/v1/images';
+export const POSTS_URL = 'https://api.thecatapi.com/v1/images';
 
 interface PostResponse {
   response: Post[] | []

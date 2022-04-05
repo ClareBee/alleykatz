@@ -1,6 +1,6 @@
 import { setBaseHeaders } from './headers';
 
-const VOTES_URL = 'https://api.thecatapi.com/v1/votes';
+export const VOTES_URL = 'https://api.thecatapi.com/v1/votes';
 
 export const vote = async (imageId: string, value: number) => {
   const requestHeaders = setBaseHeaders();
