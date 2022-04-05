@@ -1,12 +1,14 @@
 import React from "react"
-import { Box, BoxProps, Text } from "@chakra-ui/react"
+import { Box, BoxProps, Text, Link as ChakraLink } from "@chakra-ui/react"
+import Link from "next/link"
+import { FaCat } from "react-icons/fa"
 
 const Logo: React.FC<BoxProps> = (props) => {
   return (
-    <Box {...props}>
-      <Text as="h1" fontWeight="bold" fontSize="lg" >
-        AlleyKatz
-      </Text>
+    <Box fontSize="3xl">
+      <Link href="/" passHref>
+        <ChakraLink display="flex" alignItems="center"><FaCat /><Text ml="10px">AlleyKatz</Text></ChakraLink>
+      </Link>
     </Box>
   )
 }
