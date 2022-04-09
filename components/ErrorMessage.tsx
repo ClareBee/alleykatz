@@ -11,7 +11,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
   errorMessage,
   dismissError,
 }) => (
-  <Alert status="error">
+  <Alert status="error" marginBottom="20px">
     <AlertIcon />
     <AlertTitle mr={2}>Oops</AlertTitle>
     <AlertDescription>{errorMessage}</AlertDescription>
