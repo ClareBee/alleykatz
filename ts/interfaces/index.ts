@@ -48,14 +48,14 @@ export interface PostDeleteResponse {
 
 export interface ImageModalProps {
   isOpen: boolean;
-  onOpen: () => {};
-  onClose: () => {};
+  onOpen: () => void;
+  onClose: () => void;
 }
 
 export interface ImageUploaderProps {
   isModal?: boolean;
   mutatePosts?: () => {};
-  onClose?: () => {};
+  onClose?: () => void;
 }
 
 export interface LogoProps extends BoxProps {

@@ -32,7 +32,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
       setError('You can only upload one image at a time');
     }
     const file = target.files[0];
-    console.log(file);
     if (file && !isFileSizeValid(file.size)) {
       setError('File size is too big');
     }
@@ -56,14 +55,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
       return;
     }
     setIsLoading(true);
-
     const formData = new FormData();
-
     formData.append('file', selectedImg);
 
     try {
       const requestHeaders = setBaseHeaders();
-
       await fetch(UPLOAD_URL, {
         method: 'POST',
         mode: 'cors',
@@ -81,15 +77,12 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
         setIsLoading(false);
       });
     } catch (error) {
-      console.log(error);
       setError('There was a problem uploading your file. Please try again.');
       setIsLoading(false);
       setSelectedImg(null);
     }
   };
-  console.log('selected', selectedImg);
   return (
-    
     <Stack width="80%" margin="0 auto" color="brand.700">
       <Button
         onClick={() =>
