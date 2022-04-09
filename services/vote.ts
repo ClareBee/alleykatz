@@ -58,3 +58,28 @@ export const getVotes = async (): Promise<VotesResponse> => {
     return { response, votesError };
   }
 };
+
+export const deleteVote = async (voteId: number) => {
+  try {
+    const requestHeaders = setBaseHeaders();
+    const res = await fetch(`${VOTES_URL}/${voteId}`, {
+      headers: requestHeaders,
+      method: 'DELETE'
+    });
+    let response;
+    let voteError;
+    if (!res.ok) {
+      response = [];
+      voteError = 'Something went wrong deleting vote';
+    } else {
+      response = await res.json();
+      voteError = null;
+    }
+    return { response, voteError };
+  } catch (error) {
+    console.log(error);
+    const response: [] = [];
+    const voteError = 'System error';
+    return { response, voteError };
+  }
+}

@@ -25,7 +25,7 @@ export interface CatPostProps {
 
 export interface VoteProps {
   imageId: string;
-  userVote?: 0 | 1;
+  userVote?: { vote?: 0 | 1 | undefined; id?: number };
   mutateVotes: () => {};
 }
 

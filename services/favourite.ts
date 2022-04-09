@@ -53,13 +53,13 @@ export const unfavourite = async (favouriteId: number) => {
   }
 };
 
-export const favourite = async (imageId: string) => {
+export const favourite = async (imageId: string, userId = '123') => {
   try {
     const requestHeaders = setBaseHeaders();
     requestHeaders.set('Content-Type', 'application/json');
     const data = {
       image_id: imageId,
-      sub_id: '123',
+      sub_id: userId,
     };
   
     const res = await fetch(FAVOURITE_URL, {
