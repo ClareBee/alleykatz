@@ -13,6 +13,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 const AppMenu = () => {
   const { data: session } = useSession();
+  console.log(session)
   const sessionButton = () => {
     if(!session) {
     return <Button onClick={() => signIn()}>Sign in</Button>;

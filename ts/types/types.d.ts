@@ -4,6 +4,7 @@ export type Post = {
   url: string;
   width: number;
   favourite_id?: string;
+  sub_id?: string;
 };
 
 export type Favourite = {
