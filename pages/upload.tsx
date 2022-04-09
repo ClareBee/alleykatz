@@ -1,11 +1,11 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useState, useRef, MouseEvent } from 'react';
-import { Box, Button, IconButton, Stack } from '@chakra-ui/react';
+import { Box, Button, IconButton, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { setBaseHeaders } from '../utils/headers';
 import { isFileSizeValid } from '../utils/validateFile';
-import { FaCamera } from 'react-icons/fa';
+import { FaCamera, FaCat } from 'react-icons/fa';
 
 const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
 
@@ -84,14 +84,26 @@ const Update: NextPage = () => {
   console.log('selected', selectedImg);
   return (
     <Stack width="80%" margin="0 auto" color="brand.700">
-      <IconButton
-        icon={<FaCamera />}
-        aria-label="upload a cat picture"
+      <Button
         onClick={() =>
           imageUploaderRef.current && imageUploaderRef.current.click()
         }
-        marginBottom="4"
-      />
+        isLoading={isLoading}
+        isDisabled={isLoading}
+        display="flex"
+        flexWrap="wrap"
+        height="auto"
+        p="10px 20px"
+      >
+        <Text
+          marginRight="20px"
+          lineHeight="6"
+          style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}
+        >
+          Upload a photo of your cat
+        </Text>
+        <FaCamera />
+      </Button>
       <input
         hidden
         ref={imageUploaderRef}
@@ -124,8 +136,19 @@ const Update: NextPage = () => {
         onClick={uploadImage}
         isLoading={isLoading}
         isDisabled={isLoading}
+        display="flex"
+        flexWrap="wrap"
+        height="auto"
+        p="10px 20px"
       >
-        Upload Image
+        <Text
+          marginRight="20px"
+          lineHeight="6"
+          style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}
+        >
+          Confirm
+        </Text>{' '}
+        <FaCat />
       </Button>
     </Stack>
   );

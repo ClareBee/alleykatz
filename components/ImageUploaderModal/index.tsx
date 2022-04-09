@@ -10,9 +10,11 @@ import {
   useDisclosure,
   Button,
   IconButton,
+  Text,
 } from '@chakra-ui/react';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
 import { ImageModalProps } from '../../ts/interfaces';
+import { FaCat } from 'react-icons/fa';
 
 const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
 
@@ -61,7 +63,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ mutatePosts }) => {
         console.log(res);
         setIsLoading(false);
         setSelectedImg(null);
-        mutatePosts()
+        mutatePosts();
         onClose();
       });
     } catch (error) {
@@ -94,11 +96,18 @@ const ImageModal: React.FC<ImageModalProps> = ({ mutatePosts }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Upload your cat</ModalHeader>
+          <ModalHeader display="flex" flexDirection="row" alignItems="center">
+            <Text marginRight="20px">Upload your cat</Text>
+            <FaCat />
+          </ModalHeader>
           <ModalCloseButton />
 
           <ModalBody>
-            <input type="file" onChange={handleOnChange} />
+            <input
+              type="file"
+              onChange={handleOnChange}
+              accept="image/png, image/jpeg"
+            />
             {error && <p>Something went wrong</p>}
           </ModalBody>
 

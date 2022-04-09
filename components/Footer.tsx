@@ -5,7 +5,7 @@ import styles from '../styles/Footer.module.scss';
 
 const Footer: React.FC = () => {
   return (
-    <Box as="footer" height="50" marginTop="-50">
+    <Box as="footer" height="50" marginTop="-50" color="brand.700">
       <a
         href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
         target="_blank"
