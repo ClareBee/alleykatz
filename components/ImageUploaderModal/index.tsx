@@ -10,13 +10,13 @@ import {
   useDisclosure,
   Button,
   IconButton,
-  Box,
 } from '@chakra-ui/react';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
+import { ImageModalProps } from '../../ts/interfaces';
 
 const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
 
-const ImageModal = () => {
+const ImageModal: React.FC<ImageModalProps> = ({ mutatePosts }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedImg, setSelectedImg] = useState<File | null>(null);
   // move to redux
@@ -60,10 +60,13 @@ const ImageModal = () => {
       }).then((res) => {
         console.log(res);
         setIsLoading(false);
+        setSelectedImg(null);
+        mutatePosts()
         onClose();
       });
     } catch (error) {
       console.log(error);
+      setSelectedImg(null);
       setError(true);
       setIsLoading(false);
     }
@@ -85,6 +88,7 @@ const ImageModal = () => {
         bottom="20px"
         width="100px"
         height="100px"
+        zIndex={4}
       />
 
       <Modal isOpen={isOpen} onClose={onClose}>

@@ -8,7 +8,8 @@ import AppMenu from './Menu';
 const Navbar: React.FC = () => {
   const router = useRouter();
   const hideUpload = router.asPath === '/upload';
-  
+  const hideHome = router.asPath === '/';
+
   return (
     <Flex
       as="nav"
@@ -21,7 +22,7 @@ const Navbar: React.FC = () => {
       bg={['primary.500']}
       color={['brand.700']}
     >
-      <Logo />
+      {hideHome ? <Logo disabled /> : <Logo /> }
       <Box fontSize="2xl">
         {hideUpload ? (
           <FaCamera fill="grey" />

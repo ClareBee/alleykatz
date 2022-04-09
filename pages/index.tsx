@@ -63,7 +63,7 @@ const Home: NextPage<PostsProps> = ({
         marginBottom="100px"
         marginTop="50px"
       >
-        <ImageUploaderModal />
+        <ImageUploaderModal mutatePosts={mutatePosts} />
       </Flex>
     </SWRConfig>
   );

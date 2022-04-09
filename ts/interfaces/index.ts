@@ -1,3 +1,4 @@
+import { BoxProps } from '@chakra-ui/react';
 import { Favourite, Post, Vote } from "../types/types";
 
 export interface PostsProps {
@@ -43,4 +44,12 @@ export interface PostResponse {
 
 export interface PostDeleteResponse {
   postDeleteError: string | null
+}
+
+export interface ImageModalProps {
+  mutatePosts: () => {}
+}
+
+export interface LogoProps extends BoxProps {
+  disabled?: boolean
 }
