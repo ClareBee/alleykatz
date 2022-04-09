@@ -50,7 +50,7 @@ const Posts: React.FC<PostsProps> = ({
     });
   };
   return (
-    <SimpleGrid columns={{ sm: 2, md: 3 }} spacingX="40px" spacingY="20px">
+    <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} spacingX="40px" spacingY="20px">
       {posts ? formatPosts(posts) : 'No Posts available'}
     </SimpleGrid>
   );
