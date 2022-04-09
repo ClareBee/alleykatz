@@ -1,42 +1,32 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, } from 'react';
 import { Box, Button, IconButton, Stack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { CatPostProps } from '../../ts/interfaces';
 import VoteButtons from './VoteButtons';
-import { Vote } from '../../ts/types/types';
 import {
   favourite as favouriteFn,
   unfavourite,
 } from '../../services/favourite';
 import { deletePost } from '../../services/posts';
+import { calculateVote, getUserVote } from '../../utils/helpers';
 
 const CatPost: React.FC<CatPostProps> = ({
   post: { url: imageUrl, id },
   favourite,
-  votes,
+  postVotes,
   mutateFavourites,
-  mutatePosts
+  mutatePosts,
+  mutateVotes,
 }) => {
   const [error, setError] = useState(false);
-  // TODO: refactor
-  const calculateVote = (votes: Vote[]) => {
-    console.log('id', id);
-    let total = 0;
-    votes?.map((vote) => {
-      if (vote.image_id === id && vote.value === 1) {
-        total += 1;
-      }
-      if (vote.image_id === id && vote.value === 0) {
-        total -= 1;
-      }
-    });
-    return total;
-  };
+
 
   const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if(!id) { return; }
+    if (!id) {
+      return;
+    }
     const { postDeleteError } = await deletePost(id);
     if (postDeleteError) {
       console.log(postDeleteError);
@@ -44,7 +34,7 @@ const CatPost: React.FC<CatPostProps> = ({
     } else {
       mutatePosts();
     }
-  }
+  };
 
   const handleUnfavourite = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -53,12 +43,12 @@ const CatPost: React.FC<CatPostProps> = ({
     }
     const { unfavouriteError } = await unfavourite(favourite.id);
     if (unfavouriteError) {
-      console.log(unfavouriteError);
       setError(true);
     } else {
       mutateFavourites();
     }
   };
+
   const handleFavourite = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!id) {
@@ -66,7 +56,7 @@ const CatPost: React.FC<CatPostProps> = ({
     }
     const { favouriteError } = await favouriteFn(id);
     if (favouriteError) {
-      console.log(favouriteError);
+      setError(true)
     } else {
       mutateFavourites();
     }
@@ -74,6 +64,7 @@ const CatPost: React.FC<CatPostProps> = ({
 
   return (
     <Box
+      tabIndex={0}
       maxWidth="220px"
       padding="10px"
       shadow="md"
@@ -81,8 +72,17 @@ const CatPost: React.FC<CatPostProps> = ({
       borderRadius="md"
       transition="all 0.15s ease-in-out"
       backgroundColor="rgba(0, 0, 0, 0.02)"
-      _hover={{ backgroundColor: "#fff", shadow: "lg", transform: "scale3d(1.05, 1.05, 1)" }}
-      _focus={{ boxShadow: "outline" }}
+      _hover={{
+        backgroundColor: '#fff',
+        shadow: 'lg',
+        transform: 'scale3d(1.05, 1.05, 1)',
+      }}
+      _focus={{
+        border: '1px solid black',
+        backgroundColor: '#fff',
+        shadow: 'lg',
+        transform: 'scale3d(1.05, 1.05, 1)',
+      }}
     >
       <Stack>
         <Box
@@ -117,7 +117,7 @@ const CatPost: React.FC<CatPostProps> = ({
           color="brand.700"
         >
           Score:
-          {votes && calculateVote(votes)}
+          {postVotes && calculateVote(postVotes)}
         </Text>
         <Stack
           direction="row"
@@ -138,7 +138,11 @@ const CatPost: React.FC<CatPostProps> = ({
               onClick={(e) => handleUnfavourite(e)}
             />
           )}
-          <VoteButtons imageId={id} />
+          <VoteButtons
+            imageId={id}
+            mutateVotes={mutateVotes}
+            userVote={getUserVote(postVotes)}
+          />
         </Stack>
         {error && 'Something went wrong'}
       </Stack>

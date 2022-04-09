@@ -17,23 +17,30 @@ const Home: NextPage<PostsProps> = ({
   votesError,
   favouritesError,
 }) => {
-  const { data: posts, mutate: mutatePosts, error: postsSWRError } = useSWR(
+  const {
+    data: posts,
+    mutate: mutatePosts,
+    error: postsSWRError,
+  } = useSWR(
     `${POSTS_URL}?limit=100&include_vote=1&include_favourite=1`,
     fetcher,
-    { fallbackData: postsProps, refreshInterval: 30000,
-    }
+    { fallbackData: postsProps, refreshInterval: 30000 }
   );
-  const { data: favourites, mutate: mutateFavourites, error: favouritesSWRError } = useSWR(
-    FAVOURITE_URL,
-    fetcher,
-    { fallbackData: favouritesProps }
-  );
-  const { data: votes, error: votesSWRError } = useSWR(VOTES_URL, fetcher, {
+  const {
+    data: favourites,
+    mutate: mutateFavourites,
+    error: favouritesSWRError,
+  } = useSWR(FAVOURITE_URL, fetcher, { fallbackData: favouritesProps });
+  const {
+    data: votes,
+    mutate: mutateVotes,
+    error: votesSWRError,
+  } = useSWR(VOTES_URL, fetcher, {
     fallbackData: votesProps,
     refreshInterval: 30000,
   });
   return (
-    <SWRConfig value={{ provider: () => new Map()}}>
+    <SWRConfig value={{ provider: () => new Map() }}>
       <Text>
         {postsError} {votesError} {favouritesError}
       </Text>
@@ -41,7 +48,14 @@ const Home: NextPage<PostsProps> = ({
         {postsSWRError} {votesSWRError} {favouritesSWRError}
       </Text>
 
-      <Posts posts={posts} favourites={favourites} votes={votes} mutateFavourites={mutateFavourites} mutatePosts={mutatePosts} />
+      <Posts
+        posts={posts}
+        favourites={favourites}
+        votes={votes}
+        mutateFavourites={mutateFavourites}
+        mutatePosts={mutatePosts}
+        mutateVotes={mutateVotes}
+      />
       <Flex
         width="100%"
         alignItems="center"

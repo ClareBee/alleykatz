@@ -1,6 +1,6 @@
-import { Box, Flex, SimpleGrid, Text } from '@chakra-ui/react';
+import { Flex, SimpleGrid, Text } from '@chakra-ui/react';
 import { PostsProps } from '../../ts/interfaces';
-import { Favourite, Post } from '../../ts/types/types';
+import { Favourite, Post, Vote } from '../../ts/types/types';
 import CatPost from '../Post';
 
 const Posts: React.FC<PostsProps> = ({
@@ -8,11 +8,18 @@ const Posts: React.FC<PostsProps> = ({
   favourites,
   votes,
   mutateFavourites,
-  mutatePosts
+  mutatePosts,
+  mutateVotes
 }) => {
   console.log('votes', votes);
   console.log('posts', posts);
   console.log('favourites', favourites);
+
+  const getPostVotes = (votes: Vote[], postId: string) => {
+    if(!votes) { return [] };
+    return votes.filter(vote => vote.image_id === postId)
+  }
+
   const formatPosts = (posts: Post[]) => {
     console.log('posts', posts);
     if (!Array.isArray(posts)) {
@@ -25,17 +32,18 @@ const Posts: React.FC<PostsProps> = ({
           fav.image_id === post.id ? fav : null
         );
       }
-
-      console.log('fav', favourite);
+      const postVotes = getPostVotes(votes, post.id);
+      
       return (
         <Flex key={post.id} alignItems="center" justifyContent="center">
           <CatPost
             post={post}
             key={post.id}
             favourite={favourite}
-            votes={votes}
+            postVotes={postVotes}
             mutateFavourites={mutateFavourites}
             mutatePosts={mutatePosts}
+            mutateVotes={mutateVotes}
           />
         </Flex>
       );
