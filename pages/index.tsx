@@ -20,13 +20,12 @@ const Home: NextPage<PostsProps> = ({
   favouritesError,
 }) => {
   const { data: session } = useSession();
-
   const {
     data: posts,
     mutate: mutatePosts,
     error: postsSWRError,
   } = useSWR(
-    `${POSTS_URL}?limit=100&include_vote=1&include_favourite=1`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/images`,
     fetcher,
     { fallbackData: postsProps, refreshInterval: 30000 }
   );
@@ -44,14 +43,6 @@ const Home: NextPage<PostsProps> = ({
     refreshInterval: 30000,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // if (!session) {
-  //   return (
-  //     <>
-  //       <button onClick={() => signIn()}>Sign in</button>
-  //     </>
-  //   )
-  // }
 
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
@@ -93,7 +84,8 @@ const Home: NextPage<PostsProps> = ({
 
 // data for initial load
 export async function getStaticProps() {
-  const { response: posts, postsError } = await getPosts();
+  const postsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/images`);
+  const posts = await postsRes.json()
   const { response: favourites, favouritesError } = await getFavourites('123');
   const { response: votes, votesError } = await getVotes();
 
@@ -102,9 +94,10 @@ export async function getStaticProps() {
       posts,
       favourites,
       votes,
-      postsError,
+      // postsError,
       votesError,
       favouritesError,
+      // res: resJson
     },
     revalidate: 1,
   };

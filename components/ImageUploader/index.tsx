@@ -67,7 +67,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
         headers: requestHeaders,
         body: formData,
       }).then((res) => {
-        console.log(res);
         if(isModal) {
           onClose && onClose()
           mutatePosts && mutatePosts();

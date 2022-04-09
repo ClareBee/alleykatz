@@ -16,14 +16,12 @@ const VoteButtons: React.FC<VoteProps> = ({
   ) => {
     e.preventDefault();
     const { voteError } = await vote(imageId, value);
-    console.log('value', value);
     if (voteError) {
       setError('Something went wrong with your vote');
     } else {
       mutateVotes();
     }
   };
-  console.log(userVote);
   return (
     <>
       {error && <Text>{error}</Text>}

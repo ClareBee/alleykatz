@@ -21,7 +21,6 @@ export const vote = async (imageId: string, value: number): Promise<VoteResponse
       headers: requestHeaders,
       body: JSON.stringify(data),
     });
-    console.log('res', res);
     let voteError;
     if (!res.ok) {
       throw new Error('Something went wrong');

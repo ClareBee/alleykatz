@@ -43,7 +43,6 @@ export const unfavourite = async (favouriteId: number) => {
     if (!res.ok) {
       unfavouriteError = 'Something went wrong';
     } else {
-      console.log(res)
       unfavouriteError = null;
     }
     return { unfavouriteError };
@@ -74,7 +73,6 @@ export const favourite = async (imageId: string) => {
     if (!res.ok) {
       favouriteError = 'Something went wrong';
     } else {
-      console.log(res)
       favouriteError = null;
     }
     return { favouriteError };
