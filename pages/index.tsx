@@ -58,7 +58,7 @@ const Home: NextPage<PostsProps> = ({
       {error && <ErrorMessage errorMessage={error} dismissError={dismissError}/>}
       {(postsError || postsSWRError) && <ErrorMessage errorMessage={postsError} />}
       {(votesError || votesSWRError) && <ErrorMessage errorMessage={votesError} />}
-      {(favouritesError || favouritesError) && <ErrorMessage errorMessage={favouritesError} />}
+      {(favouritesError || favouritesSWRError) && <ErrorMessage errorMessage={favouritesError} />}
 
       <Posts
         posts={posts}
