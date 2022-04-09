@@ -3,13 +3,12 @@ import Posts from '../components/Posts';
 import ImageUploaderModal from '../components/ImageUploaderModal';
 import { Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { PostsProps } from '../ts/interfaces';
-import { getPosts, POSTS_URL } from '../services/posts';
 import { getFavourites, FAVOURITE_URL } from '../services/favourite';
 import { getVotes, VOTES_URL } from '../services/vote';
 import { fetcher } from '../services/fetcher';
 import useSWR, { SWRConfig } from 'swr';
 import ImageUploader from '../components/ImageUploader';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const Home: NextPage<PostsProps> = ({
   posts: postsProps,
