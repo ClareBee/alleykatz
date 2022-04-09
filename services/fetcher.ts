@@ -1,4 +1,4 @@
-import { setBaseHeaders } from "./headers";
+import { setBaseHeaders } from "../utils/headers";
 
 const requestHeaders = setBaseHeaders();
 

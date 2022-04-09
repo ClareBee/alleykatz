@@ -1,4 +1,4 @@
-import { setBaseHeaders } from "./headers";
+import { setBaseHeaders } from "../utils/headers";
 
 export const FAVOURITE_URL = 'https://api.thecatapi.com/v1/favourites';
 

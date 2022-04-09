@@ -1,4 +1,4 @@
-import { setBaseHeaders } from './headers';
+import { setBaseHeaders } from '../utils/headers';
 
 export const VOTES_URL = 'https://api.thecatapi.com/v1/votes';
 

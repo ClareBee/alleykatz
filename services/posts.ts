@@ -1,5 +1,5 @@
 import { Post } from './../ts/types/types.d';
-import { setBaseHeaders } from './headers';
+import { setBaseHeaders } from '../utils/headers';
 
 export const POSTS_URL = 'https://api.thecatapi.com/v1/images';
 
