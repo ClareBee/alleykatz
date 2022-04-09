@@ -9,6 +9,7 @@ import { getVotes, VOTES_URL } from '../services/vote';
 import { fetcher } from '../services/fetcher';
 import useSWR, { SWRConfig } from 'swr';
 import ImageUploader from '../components/ImageUploader';
+import { signIn, useSession } from 'next-auth/react';
 
 const Home: NextPage<PostsProps> = ({
   posts: postsProps,
@@ -18,6 +19,8 @@ const Home: NextPage<PostsProps> = ({
   votesError,
   favouritesError,
 }) => {
+  const { data: session } = useSession();
+
   const {
     data: posts,
     mutate: mutatePosts,
@@ -42,6 +45,14 @@ const Home: NextPage<PostsProps> = ({
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // if (!session) {
+  //   return (
+  //     <>
+  //       <button onClick={() => signIn()}>Sign in</button>
+  //     </>
+  //   )
+  // }
+
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
       <Text>
@@ -59,17 +70,23 @@ const Home: NextPage<PostsProps> = ({
         mutatePosts={mutatePosts}
         mutateVotes={mutateVotes}
       />
-      <Flex
-        width="100%"
-        alignItems="center"
-        justifyContent="flex-end"
-        marginBottom="100px"
-        marginTop="50px"
-      >
-        <ImageUploaderModal isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
-          <ImageUploader isModal onClose={onClose} mutatePosts={mutatePosts} />
-        </ImageUploaderModal>
-      </Flex>
+      {session && (
+        <Flex
+          width="100%"
+          alignItems="center"
+          justifyContent="flex-end"
+          marginBottom="100px"
+          marginTop="50px"
+        >
+          <ImageUploaderModal isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+            <ImageUploader
+              isModal
+              onClose={onClose}
+              mutatePosts={mutatePosts}
+            />
+          </ImageUploaderModal>
+        </Flex>
+      )}
     </SWRConfig>
   );
 };
