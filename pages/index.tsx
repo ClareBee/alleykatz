@@ -1,30 +1,33 @@
 import type { NextPage } from 'next';
 import Posts from '../components/Posts';
 import ImageUploaderModal from '../components/ImageUploaderModal';
-import { Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import { PostsProps } from '../ts/interfaces';
-import { getFavourites, FAVOURITE_URL } from '../services/favourite';
+import { FAVOURITE_URL } from '../services/favourite';
 import { getVotes, VOTES_URL } from '../services/vote';
 import { fetcher } from '../services/fetcher';
 import useSWR, { SWRConfig } from 'swr';
 import ImageUploader from '../components/ImageUploader';
 import { useSession } from 'next-auth/react';
+import ErrorMessage from '../components/ErrorMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { clearError } from '../redux/errorSlice';
 
 const Home: NextPage<PostsProps> = ({
   posts: postsProps,
-  favourites: favouritesProps,
   votes: votesProps,
   postsError,
   votesError,
-  favouritesError,
 }) => {
   const { data: session } = useSession();
+  const user = session?.user?.name || '123';
   const {
     data: posts,
     mutate: mutatePosts,
     error: postsSWRError,
   } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/images`,
+    `api/images`,
     fetcher,
     { fallbackData: postsProps, refreshInterval: 30000 }
   );
@@ -32,7 +35,7 @@ const Home: NextPage<PostsProps> = ({
     data: favourites,
     mutate: mutateFavourites,
     error: favouritesSWRError,
-  } = useSWR(FAVOURITE_URL, fetcher, { fallbackData: favouritesProps });
+  } = useSWR(`${FAVOURITE_URL}?sub_id=${user}`, fetcher);
   const {
     data: votes,
     mutate: mutateVotes,
@@ -42,15 +45,17 @@ const Home: NextPage<PostsProps> = ({
     refreshInterval: 30000,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch();
+  const error = useSelector((state: RootState) => state.error.error)
+
+  const dismissError = () => dispatch(clearError())
 
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
-      <Text>
-        {postsError} {votesError} {favouritesError}
-      </Text>
-      <Text>
-        {postsSWRError} {votesSWRError} {favouritesSWRError}
-      </Text>
+      {error && <ErrorMessage errorMessage={error} dismissError={dismissError}/>}
+      {(postsError || postsSWRError) && <ErrorMessage errorMessage={postsError} />}
+      {(votesError || votesSWRError) && <ErrorMessage errorMessage={votesError} />}
+      {(favouritesSWRError) && <ErrorMessage errorMessage={favouritesSWRError} />}
 
       <Posts
         posts={posts}
@@ -85,18 +90,14 @@ const Home: NextPage<PostsProps> = ({
 export async function getStaticProps() {
   const postsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/images`);
   const posts = await postsRes.json()
-  const { response: favourites, favouritesError } = await getFavourites('123');
   const { response: votes, votesError } = await getVotes();
 
   return {
     props: {
       posts,
-      favourites,
       votes,
       // postsError,
       votesError,
-      favouritesError,
-      // res: resJson
     },
     revalidate: 1,
   };

@@ -1,4 +1,3 @@
-import { Vote } from '../../ts/types/types';
 import { calculateVote, getUserVote } from '../helpers';
 import { mixedVotes, testPostVotes } from './testData';
 
@@ -11,6 +10,6 @@ describe('calculateVote', () => {
 
 describe('getUserVote', () => {
   it('returns user vote for a post', () => {
-    expect(getUserVote(mixedVotes, '123')).toEqual(0);
+    expect(getUserVote(mixedVotes, '123')).toEqual({ vote: 0, id:  519222});
   });
 });

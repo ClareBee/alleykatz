@@ -14,7 +14,7 @@ export const getPosts = async (): Promise<PostResponse> => {
     let postsError;
     if (!res.ok) {
       response = [];
-      postsError = 'Posts error';
+      postsError = 'Something went wrong fetching posts';
     } else {
       response = await res.json();
       postsError = null;
@@ -39,7 +39,7 @@ export const deletePost = async (
     });
     let postDeleteError;
     if (!res.ok) {
-      postDeleteError = 'Posts error';
+      postDeleteError = 'Something went wrong deleting post';
     } else {
       postDeleteError = null;
     }

@@ -11,9 +11,11 @@ import {
 import { deletePost } from '../../services/posts';
 import { calculateVote, getUserVote } from '../../utils/helpers';
 import { useSession } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
+import { setError } from '../../redux/errorSlice';
 
 const CatPost: React.FC<CatPostProps> = ({
-  post: { url: imageUrl, id },
+  post: { url: imageUrl, id, sub_id },
   favourite,
   postVotes,
   mutateFavourites,
@@ -21,8 +23,9 @@ const CatPost: React.FC<CatPostProps> = ({
   mutateVotes,
 }) => {
   const { data: session } = useSession();
+  const dispatch = useDispatch();
 
-  const [error, setError] = useState(false);
+  const postIsUsers = () => sub_id === session?.user?.name;
 
   const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -32,7 +35,7 @@ const CatPost: React.FC<CatPostProps> = ({
     const { postDeleteError } = await deletePost(id);
     if (postDeleteError) {
       console.log(postDeleteError);
-      setError(true);
+      dispatch(setError('We ran into problems deleting the image. Try again!'));
     } else {
       mutatePosts();
     }
@@ -45,7 +48,7 @@ const CatPost: React.FC<CatPostProps> = ({
     }
     const { unfavouriteError } = await unfavourite(favourite.id);
     if (unfavouriteError) {
-      setError(true);
+      dispatch(setError('We ran into problems unliking the image. Try again!'));
     } else {
       mutateFavourites();
     }
@@ -56,9 +59,13 @@ const CatPost: React.FC<CatPostProps> = ({
     if (!id) {
       return;
     }
-    const { favouriteError } = await favouriteFn(id);
+    let user;
+    if (session?.user?.name) {
+      user = session.user.name;
+    }
+    const { favouriteError } = await favouriteFn(id, user);
     if (favouriteError) {
-      setError(true);
+      dispatch(setError('We ran into problems liking the image. Try again!'));
     } else {
       mutateFavourites();
     }
@@ -93,22 +100,23 @@ const CatPost: React.FC<CatPostProps> = ({
           width="200px"
           borderRadius="inherit"
         >
-         {session && <Button
-            position="absolute"
-            right="2px"
-            top="2px"
-            zIndex={2}
-            fontSize="3xl"
-            lineHeight="0"
-            color="red"
-            backgroundColor="rgba(255, 255, 255, 0.2)"
-            borderRadius="full"
-            padding="0px"
-            onClick={(e) => handleDelete(e)}
-          >
-            &times;
-          </Button>
-}
+          {session && postIsUsers() && (
+            <Button
+              position="absolute"
+              right="2px"
+              top="2px"
+              zIndex={2}
+              fontSize="3xl"
+              lineHeight="0"
+              color="red"
+              backgroundColor="rgba(255, 255, 255, 0.2)"
+              borderRadius="full"
+              padding="0px"
+              onClick={(e) => handleDelete(e)}
+            >
+              &times;
+            </Button>
+          )}
           <Image
             layout="fill"
             src={imageUrl}
@@ -128,34 +136,33 @@ const CatPost: React.FC<CatPostProps> = ({
           Score:
           {postVotes && calculateVote(postVotes)}
         </Text>
-        {session && 
-        <Stack
-          direction="row"
-          spacing={4}
-          justifyContent="space-between"
-          marginTop="10px"
-        >
-          {!favourite?.id ? (
-            <IconButton
-              aria-label="Like this cat"
-              icon={<FaRegHeart />}
-              onClick={(e) => handleFavourite(e)}
+        {session && (
+          <Stack
+            direction="row"
+            spacing={4}
+            justifyContent="space-between"
+            marginTop="10px"
+          >
+            {!favourite?.id ? (
+              <IconButton
+                aria-label="Like this cat"
+                icon={<FaRegHeart />}
+                onClick={(e) => handleFavourite(e)}
+              />
+            ) : (
+              <IconButton
+                aria-label="Unlike this cat"
+                icon={<FaHeart fill="red" />}
+                onClick={(e) => handleUnfavourite(e)}
+              />
+            )}
+            <VoteButtons
+              imageId={id}
+              mutateVotes={mutateVotes}
+              userVote={getUserVote(postVotes)}
             />
-          ) : (
-            <IconButton
-              aria-label="Unlike this cat"
-              icon={<FaHeart fill="red" />}
-              onClick={(e) => handleUnfavourite(e)}
-            />
-          )}
-          <VoteButtons
-            imageId={id}
-            mutateVotes={mutateVotes}
-            userVote={getUserVote(postVotes)}
-          />
-        </Stack>
-        }
-        {error && 'Something went wrong'}
+          </Stack>
+        )}
       </Stack>
     </Box>
   );

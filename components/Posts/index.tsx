@@ -18,7 +18,7 @@ const Posts: React.FC<PostsProps> = ({
 
   const formatPosts = (posts: Post[]) => {
     if (!Array.isArray(posts)) {
-      return <Text>Something went wrong fetching posts</Text>;
+      return;
     }
     return posts.map((post) => {
       let favourite;

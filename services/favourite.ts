@@ -21,7 +21,7 @@ export const getFavourites = async (userId: string) => {
   } catch (error) {
     console.log(error);
     const response: [] = [];
-    const favouritesError = 'System error';
+    const favouritesError = 'System error: data might be out of date';
     return { response, favouritesError };
   }
 };
@@ -48,18 +48,18 @@ export const unfavourite = async (favouriteId: number) => {
     return { unfavouriteError };
   } catch (error) {
     console.log(error);
-    const favouriteError = 'System error';
+    const favouriteError = 'System error: data may be out of date';
     return { favouriteError };
   }
 };
 
-export const favourite = async (imageId: string) => {
+export const favourite = async (imageId: string, userId = '123') => {
   try {
     const requestHeaders = setBaseHeaders();
     requestHeaders.set('Content-Type', 'application/json');
     const data = {
       image_id: imageId,
-      sub_id: '123',
+      sub_id: userId,
     };
   
     const res = await fetch(FAVOURITE_URL, {
@@ -71,7 +71,7 @@ export const favourite = async (imageId: string) => {
     });
     let favouriteError;
     if (!res.ok) {
-      favouriteError = 'Something went wrong';
+      favouriteError = 'System error: data may be out of date';
     } else {
       favouriteError = null;
     }

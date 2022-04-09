@@ -25,7 +25,7 @@ export interface CatPostProps {
 
 export interface VoteProps {
   imageId: string;
-  userVote?: 0 | 1;
+  userVote?: { vote?: 0 | 1 | undefined; id?: number };
   mutateVotes: () => {};
 }
 
@@ -60,4 +60,9 @@ export interface ImageUploaderProps {
 
 export interface LogoProps extends BoxProps {
   disabled?: boolean;
+}
+
+export interface ErrorMessageProps {
+  errorMessage?: string;
+  dismissError?: () => void;
 }

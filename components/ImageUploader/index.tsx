@@ -6,34 +6,45 @@ import { setBaseHeaders } from '../../utils/headers';
 import { isFileSizeValid } from '../../utils/validateFile';
 import { FaCamera, FaCat } from 'react-icons/fa';
 import { ImageUploaderProps } from '../../ts/interfaces';
+import ErrorMessage from '../ErrorMessage';
+import { clearError, setError } from '../../redux/errorSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { useSession } from 'next-auth/react';
 
 const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onClose }) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({
+  isModal,
+  mutatePosts,
+  onClose,
+}) => {
+  const { data: session } = useSession();
 
   const [selectedImg, setSelectedImg] = useState<File | null>(null);
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | null>(
     null
   );
   const imageUploaderRef = useRef<HTMLInputElement>(null);
-  // move to redux?
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const dispatch = useDispatch();
+  const error = useSelector((state: RootState) => state.error.error);
+
   const handleOnChange = (e: React.ChangeEvent) => {
-    resetError();
+    dispatch(clearError());
 
     const target = e.target as HTMLInputElement;
     if (!target?.files) {
       return;
     }
     if (target.files.length > 1) {
-      setError('You can only upload one image at a time');
+      dispatch(setError('You can only upload one image at a time'));
     }
     const file = target.files[0];
     if (file && !isFileSizeValid(file.size)) {
-      setError('File size is too big');
+      dispatch(setError('File size is too big'));
     }
     setSelectedImg(file);
 
@@ -41,13 +52,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
     fileReader.readAsDataURL(file);
     fileReader.onload = (readEvent) => {
       if (!readEvent || !readEvent.target) {
-        return setError('Something went wrong');
+        return dispatch(setError('There was a problem reading the file'));
       }
       setPreviewImg(readEvent.target.result);
     };
   };
-
-  const resetError = () => setError(null);
 
   const uploadImage = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -57,6 +66,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
     setIsLoading(true);
     const formData = new FormData();
     formData.append('file', selectedImg);
+    if (session?.user?.name) {
+      formData.append('sub_id', session.user.name);
+    }
 
     try {
       const requestHeaders = setBaseHeaders();
@@ -67,8 +79,16 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
         headers: requestHeaders,
         body: formData,
       }).then((res) => {
-        if(isModal) {
-          onClose && onClose()
+        if (!res.ok) {
+          setIsLoading(false);
+          return dispatch(
+            setError(
+              'There was a problem uploading your file. Please try again.'
+            )
+          );
+        }
+        if (isModal) {
+          onClose && onClose();
           mutatePosts && mutatePosts();
         } else {
           router.push('/');
@@ -76,7 +96,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
         setIsLoading(false);
       });
     } catch (error) {
-      setError('There was a problem uploading your file. Please try again.');
+      dispatch(
+        setError('There was a problem uploading your file. Please try again.')
+      );
       setIsLoading(false);
       setSelectedImg(null);
     }
@@ -88,7 +110,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
           imageUploaderRef.current && imageUploaderRef.current.click()
         }
         isLoading={isLoading}
-        isDisabled={isLoading}
+        isDisabled={isLoading || !!error}
         display="flex"
         flexWrap="wrap"
         height="auto"
@@ -109,9 +131,14 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
         type="file"
         onChange={handleOnChange}
         accept="image/png, image/jpeg"
-        onClick={resetError}
+        onClick={() => dispatch(clearError())}
       />
-      {error && <p>Something went wrong: {error}</p>}
+      {error && (
+        <ErrorMessage
+          errorMessage={`Something went wrong: ${error}`}
+          dismissError={() => dispatch(clearError())}
+        />
+      )}
       {previewImg && (
         <Box
           width="100%"
@@ -151,6 +178,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
       </Button>
     </Stack>
   );
-}
+};
 
-export default ImageUploader
+export default ImageUploader;
