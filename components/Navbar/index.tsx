@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Link as ChakraLink } from '@chakra-ui/react';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaCamera } from 'react-icons/fa';

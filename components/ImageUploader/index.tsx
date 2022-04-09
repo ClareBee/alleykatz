@@ -6,6 +6,7 @@ import { setBaseHeaders } from '../../utils/headers';
 import { isFileSizeValid } from '../../utils/validateFile';
 import { FaCamera, FaCat } from 'react-icons/fa';
 import { ImageUploaderProps } from '../../ts/interfaces';
+import ErrorMessage from '../ErrorMessage';
 
 const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
 
@@ -41,7 +42,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
     fileReader.readAsDataURL(file);
     fileReader.onload = (readEvent) => {
       if (!readEvent || !readEvent.target) {
-        return setError('Something went wrong');
+        return setError('There was a problem reading the file');
       }
       setPreviewImg(readEvent.target.result);
     };
@@ -112,7 +113,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ isModal, mutatePosts, onC
         accept="image/png, image/jpeg"
         onClick={resetError}
       />
-      {error && <p>Something went wrong: {error}</p>}
+      {error && <ErrorMessage errorMessage={`Something went wrong: ${error}`} dismissError={() => setError(null)}/>}
       {previewImg && (
         <Box
           width="100%"

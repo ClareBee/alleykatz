@@ -1,32 +1,33 @@
 import { Box, IconButton, Text } from '@chakra-ui/react';
 import { MouseEvent, useState } from 'react';
 import { BiDownvote, BiUpvote } from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
 import { vote } from '../../services/vote';
 import { VoteProps } from '../../ts/interfaces';
+import { setError } from '../../redux/errorSlice';
 
 const VoteButtons: React.FC<VoteProps> = ({
   imageId,
   mutateVotes,
   userVote,
 }) => {
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch()
+  
   const handleVote = async (
     e: MouseEvent<HTMLButtonElement>,
     value: number
   ) => {
     e.preventDefault();
     const { voteError } = await vote(imageId, value);
-    console.log('value', value);
     if (voteError) {
-      setError('Something went wrong with your vote');
+      dispatch(setError('Something went wrong with your vote'));
     } else {
       mutateVotes();
     }
   };
-  console.log(userVote);
+
   return (
     <>
-      {error && <Text>{error}</Text>}
       <Box>
         <IconButton
           bgColor={userVote === 1 ? 'green.100' : 'white'}

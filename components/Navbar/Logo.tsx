@@ -4,17 +4,15 @@ import Link from 'next/link';
 import { FaCat } from 'react-icons/fa';
 import { LogoProps } from '../../ts/interfaces';
 
-const Logo: React.FC<LogoProps> = ({ disabled }) => {
-  return (
-    <Box fontSize="3xl" pointerEvents={disabled ? 'none' : 'auto'}>
-      <Link href="/" passHref>
-        <ChakraLink display="flex" alignItems="center">
-          <FaCat />
-          <Text ml="10px">AlleyKatz</Text>
-        </ChakraLink>
-      </Link>
-    </Box>
-  );
-};
+const Logo: React.FC<LogoProps> = ({ disabled }) => (
+  <Box fontSize="3xl" pointerEvents={disabled ? 'none' : 'auto'}>
+    <Link href="/" passHref>
+      <ChakraLink display="flex" alignItems="center">
+        <FaCat />
+        <Text ml="10px">AlleyKatz</Text>
+      </ChakraLink>
+    </Link>
+  </Box>
+);
 
 export default Logo;

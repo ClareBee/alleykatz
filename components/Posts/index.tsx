@@ -11,17 +11,12 @@ const Posts: React.FC<PostsProps> = ({
   mutatePosts,
   mutateVotes
 }) => {
-  console.log('votes', votes);
-  console.log('posts', posts);
-  console.log('favourites', favourites);
-
   const getPostVotes = (votes: Vote[], postId: string) => {
     if(!votes) { return [] };
     return votes.filter(vote => vote.image_id === postId)
   }
 
   const formatPosts = (posts: Post[]) => {
-    console.log('posts', posts);
     if (!Array.isArray(posts)) {
       return <Text>Something went wrong fetching posts</Text>;
     }

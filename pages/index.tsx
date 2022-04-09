@@ -9,7 +9,11 @@ import { getVotes, VOTES_URL } from '../services/vote';
 import { fetcher } from '../services/fetcher';
 import useSWR, { SWRConfig } from 'swr';
 import ImageUploader from '../components/ImageUploader';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import ErrorMessage from '../components/ErrorMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { clearError } from '../redux/errorSlice';
 
 const Home: NextPage<PostsProps> = ({
   posts: postsProps,
@@ -44,23 +48,17 @@ const Home: NextPage<PostsProps> = ({
     refreshInterval: 30000,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch();
+  const error = useSelector((state: RootState) => state.error.error)
 
-  // if (!session) {
-  //   return (
-  //     <>
-  //       <button onClick={() => signIn()}>Sign in</button>
-  //     </>
-  //   )
-  // }
+  const dismissError = () => dispatch(clearError())
 
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
-      <Text>
-        {postsError} {votesError} {favouritesError}
-      </Text>
-      <Text>
-        {postsSWRError} {votesSWRError} {favouritesSWRError}
-      </Text>
+      {error && <ErrorMessage errorMessage={error} dismissError={dismissError}/>}
+      {(postsError || postsSWRError) && <ErrorMessage errorMessage={postsError} />}
+      {(votesError || votesSWRError) && <ErrorMessage errorMessage={votesError} />}
+      {(favouritesError || favouritesError) && <ErrorMessage errorMessage={favouritesError} />}
 
       <Posts
         posts={posts}
