@@ -1,10 +1,15 @@
-import { Box, Flex, Text,  Link as ChakraLink } from '@chakra-ui/react';
+import { Box, Flex, Text, Link as ChakraLink } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FaCamera } from 'react-icons/fa';
 import Logo from './Logo';
 import AppMenu from './Menu';
 
 const Navbar: React.FC = () => {
+  const router = useRouter();
+  const hideUpload = router.asPath === '/upload';
+  const hideHome = router.asPath === '/';
+
   return (
     <Flex
       as="nav"
@@ -17,11 +22,18 @@ const Navbar: React.FC = () => {
       bg={['primary.500']}
       color={['brand.700']}
     >
-      <Logo />
+      {hideHome ? <Logo disabled /> : <Logo /> }
       <Box fontSize="2xl">
-        <Link href="/upload" passHref>
-          <ChakraLink display="flex" alignItems="center"><FaCamera /><Text ml="10px">Upload</Text></ChakraLink>
-        </Link>
+        {hideUpload ? (
+          <FaCamera fill="grey" />
+        ) : (
+          <Link href="/upload" passHref>
+            <ChakraLink display="flex" alignItems="center">
+              <FaCamera />
+              <Text ml="10px">Upload</Text>
+            </ChakraLink>
+          </Link>
+        )}
       </Box>
 
       <AppMenu />

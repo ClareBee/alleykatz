@@ -1,16 +1,20 @@
-import React from "react"
-import { Box, BoxProps, Text, Link as ChakraLink } from "@chakra-ui/react"
-import Link from "next/link"
-import { FaCat } from "react-icons/fa"
+import React from 'react';
+import { Box, Text, Link as ChakraLink } from '@chakra-ui/react';
+import Link from 'next/link';
+import { FaCat } from 'react-icons/fa';
+import { LogoProps } from '../../ts/interfaces';
 
-const Logo: React.FC<BoxProps> = () => {
+const Logo: React.FC<LogoProps> = ({ disabled }) => {
   return (
-    <Box fontSize="3xl">
+    <Box fontSize="3xl" pointerEvents={disabled ? 'none' : 'auto'}>
       <Link href="/" passHref>
-        <ChakraLink display="flex" alignItems="center"><FaCat /><Text ml="10px">AlleyKatz</Text></ChakraLink>
+        <ChakraLink display="flex" alignItems="center">
+          <FaCat />
+          <Text ml="10px">AlleyKatz</Text>
+        </ChakraLink>
       </Link>
     </Box>
-  )
-}
+  );
+};
 
-export default Logo
+export default Logo;

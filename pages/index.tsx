@@ -1,13 +1,14 @@
 import type { NextPage } from 'next';
 import Posts from '../components/Posts';
 import ImageUploaderModal from '../components/ImageUploaderModal';
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { PostsProps } from '../ts/interfaces';
 import { getPosts, POSTS_URL } from '../services/posts';
 import { getFavourites, FAVOURITE_URL } from '../services/favourite';
 import { getVotes, VOTES_URL } from '../services/vote';
 import { fetcher } from '../services/fetcher';
 import useSWR, { SWRConfig } from 'swr';
+import ImageUploader from '../components/ImageUploader';
 
 const Home: NextPage<PostsProps> = ({
   posts: postsProps,
@@ -39,6 +40,8 @@ const Home: NextPage<PostsProps> = ({
     fallbackData: votesProps,
     refreshInterval: 30000,
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
       <Text>
@@ -63,7 +66,9 @@ const Home: NextPage<PostsProps> = ({
         marginBottom="100px"
         marginTop="50px"
       >
-        <ImageUploaderModal />
+        <ImageUploaderModal isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+          <ImageUploader isModal onClose={onClose} mutatePosts={mutatePosts} />
+        </ImageUploaderModal>
       </Flex>
     </SWRConfig>
   );

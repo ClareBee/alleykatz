@@ -1,4 +1,4 @@
-import { MouseEvent, useState, } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Box, Button, IconButton, Stack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
@@ -20,7 +20,6 @@ const CatPost: React.FC<CatPostProps> = ({
   mutateVotes,
 }) => {
   const [error, setError] = useState(false);
-
 
   const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -56,7 +55,7 @@ const CatPost: React.FC<CatPostProps> = ({
     }
     const { favouriteError } = await favouriteFn(id);
     if (favouriteError) {
-      setError(true)
+      setError(true);
     } else {
       mutateFavourites();
     }
@@ -95,7 +94,7 @@ const CatPost: React.FC<CatPostProps> = ({
             position="absolute"
             right="2px"
             top="2px"
-            zIndex={5}
+            zIndex={2}
             fontSize="3xl"
             lineHeight="0"
             color="red"
@@ -106,7 +105,13 @@ const CatPost: React.FC<CatPostProps> = ({
           >
             &times;
           </Button>
-          <Image layout="fill" src={imageUrl} alt="cat" />
+          <Image
+            layout="fill"
+            src={imageUrl}
+            alt="cat"
+            placeholder="blur"
+            blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+          />
         </Box>
         <Text
           fontWeight="bold"
