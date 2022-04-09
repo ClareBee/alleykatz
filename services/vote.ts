@@ -21,17 +21,16 @@ export const vote = async (imageId: string, value: number): Promise<VoteResponse
       headers: requestHeaders,
       body: JSON.stringify(data),
     });
-    console.log('res', res);
     let voteError;
     if (!res.ok) {
-      throw new Error('Something went wrong');
+      throw new Error('Something went wrong with your vote');
     } else {
       voteError = null;
     }
     return { voteError }
-  } catch (e) {
-    console.log(e);
-    const voteError = 'Something went wrong';
+  } catch (error) {
+    console.log(error);
+    const voteError = 'System error';
     return { voteError };
   }
 };
@@ -46,7 +45,7 @@ export const getVotes = async (): Promise<VotesResponse> => {
     let votesError;
     if (!res.ok) {
       response = [];
-      votesError = 'There was an error fetching votes';
+      votesError = 'Something went wrong fetching votes';
     } else {
       response = await res.json();
       votesError = null;

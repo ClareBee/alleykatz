@@ -21,7 +21,7 @@ export const getFavourites = async (userId: string) => {
   } catch (error) {
     console.log(error);
     const response: [] = [];
-    const favouritesError = 'System error';
+    const favouritesError = 'System error: data might be out of date';
     return { response, favouritesError };
   }
 };
@@ -43,13 +43,12 @@ export const unfavourite = async (favouriteId: number) => {
     if (!res.ok) {
       unfavouriteError = 'Something went wrong';
     } else {
-      console.log(res)
       unfavouriteError = null;
     }
     return { unfavouriteError };
   } catch (error) {
     console.log(error);
-    const favouriteError = 'System error';
+    const favouriteError = 'System error: data may be out of date';
     return { favouriteError };
   }
 };
@@ -72,9 +71,8 @@ export const favourite = async (imageId: string) => {
     });
     let favouriteError;
     if (!res.ok) {
-      favouriteError = 'Something went wrong';
+      favouriteError = 'System error: data may be out of date';
     } else {
-      console.log(res)
       favouriteError = null;
     }
     return { favouriteError };

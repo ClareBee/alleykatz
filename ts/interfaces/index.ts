@@ -61,3 +61,8 @@ export interface ImageUploaderProps {
 export interface LogoProps extends BoxProps {
   disabled?: boolean;
 }
+
+export interface ErrorMessageProps {
+  errorMessage?: string;
+  dismissError?: () => void;
+}

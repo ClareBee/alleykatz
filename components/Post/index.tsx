@@ -11,6 +11,8 @@ import {
 import { deletePost } from '../../services/posts';
 import { calculateVote, getUserVote } from '../../utils/helpers';
 import { useSession } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
+import { setError } from '../../redux/errorSlice';
 
 const CatPost: React.FC<CatPostProps> = ({
   post: { url: imageUrl, id },
@@ -21,8 +23,7 @@ const CatPost: React.FC<CatPostProps> = ({
   mutateVotes,
 }) => {
   const { data: session } = useSession();
-
-  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
 
   const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -32,7 +33,7 @@ const CatPost: React.FC<CatPostProps> = ({
     const { postDeleteError } = await deletePost(id);
     if (postDeleteError) {
       console.log(postDeleteError);
-      setError(true);
+      dispatch(setError('We ran into problems deleting the image. Try again!'));
     } else {
       mutatePosts();
     }
@@ -45,7 +46,7 @@ const CatPost: React.FC<CatPostProps> = ({
     }
     const { unfavouriteError } = await unfavourite(favourite.id);
     if (unfavouriteError) {
-      setError(true);
+      dispatch(setError('We ran into problems unliking the image. Try again!'));
     } else {
       mutateFavourites();
     }
@@ -58,7 +59,7 @@ const CatPost: React.FC<CatPostProps> = ({
     }
     const { favouriteError } = await favouriteFn(id);
     if (favouriteError) {
-      setError(true);
+      dispatch(setError('We ran into problems liking the image. Try again!'));
     } else {
       mutateFavourites();
     }
@@ -155,7 +156,6 @@ const CatPost: React.FC<CatPostProps> = ({
           />
         </Stack>
         }
-        {error && 'Something went wrong'}
       </Stack>
     </Box>
   );
