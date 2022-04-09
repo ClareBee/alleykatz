@@ -8,6 +8,7 @@ export interface PostsProps {
   favouritesError?: string
   votesError?: string
   mutateFavourites: () => {}
+  mutatePosts: () => {}
 }
 
 export interface CatPostProps {
@@ -16,8 +17,18 @@ export interface CatPostProps {
   favourite?: Favourite,
   votes: Vote[] | [],
   mutateFavourites: () => {}
+  mutatePosts: () => {}
 }
 
 export interface VoteProps {
   imageId: string
+}
+
+export interface PostResponse {
+  response: Post[] | []
+  postsError: string | null
+}
+
+export interface PostDeleteResponse {
+  postDeleteError: string | null
 }

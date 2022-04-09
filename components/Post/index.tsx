@@ -1,5 +1,5 @@
 import { MouseEvent, useState } from 'react';
-import { Box, IconButton, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, IconButton, Stack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { CatPostProps } from '../../ts/interfaces';
@@ -9,14 +9,16 @@ import {
   favourite as favouriteFn,
   unfavourite,
 } from '../../services/favourite';
+import { deletePost } from '../../services/posts';
 
 const CatPost: React.FC<CatPostProps> = ({
   post: { url: imageUrl, id },
   favourite,
   votes,
   mutateFavourites,
+  mutatePosts
 }) => {
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   // TODO: refactor
   const calculateVote = (votes: Vote[]) => {
     console.log('id', id);
@@ -32,6 +34,18 @@ const CatPost: React.FC<CatPostProps> = ({
     return total;
   };
 
+  const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if(!id) { return; }
+    const { postDeleteError } = await deletePost(id);
+    if (postDeleteError) {
+      console.log(postDeleteError);
+      setError(true);
+    } else {
+      mutatePosts();
+    }
+  }
+
   const handleUnfavourite = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!favourite?.id) {
@@ -40,7 +54,7 @@ const CatPost: React.FC<CatPostProps> = ({
     const { unfavouriteError } = await unfavourite(favourite.id);
     if (unfavouriteError) {
       console.log(unfavouriteError);
-      setError(true)
+      setError(true);
     } else {
       mutateFavourites();
     }
@@ -57,6 +71,7 @@ const CatPost: React.FC<CatPostProps> = ({
       mutateFavourites();
     }
   };
+
   return (
     <Box
       maxWidth="220px"
@@ -64,6 +79,10 @@ const CatPost: React.FC<CatPostProps> = ({
       shadow="md"
       margin={2}
       borderRadius="md"
+      transition="all 0.15s ease-in-out"
+      backgroundColor="rgba(0, 0, 0, 0.02)"
+      _hover={{ backgroundColor: "#fff", shadow: "lg", transform: "scale3d(1.05, 1.05, 1)" }}
+      _focus={{ boxShadow: "outline" }}
     >
       <Stack>
         <Box
@@ -72,6 +91,21 @@ const CatPost: React.FC<CatPostProps> = ({
           width="200px"
           borderRadius="inherit"
         >
+          <Button
+            position="absolute"
+            right="2px"
+            top="2px"
+            zIndex={5}
+            fontSize="3xl"
+            lineHeight="0"
+            color="red"
+            backgroundColor="rgba(255, 255, 255, 0.2)"
+            borderRadius="full"
+            padding="0px"
+            onClick={(e) => handleDelete(e)}
+          >
+            &times;
+          </Button>
           <Image layout="fill" src={imageUrl} alt="cat" />
         </Box>
         <Text

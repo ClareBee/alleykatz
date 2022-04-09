@@ -8,6 +8,7 @@ const Posts: React.FC<PostsProps> = ({
   favourites,
   votes,
   mutateFavourites,
+  mutatePosts
 }) => {
   console.log('votes', votes);
   console.log('posts', posts);
@@ -34,6 +35,7 @@ const Posts: React.FC<PostsProps> = ({
             favourite={favourite}
             votes={votes}
             mutateFavourites={mutateFavourites}
+            mutatePosts={mutatePosts}
           />
         </Flex>
       );

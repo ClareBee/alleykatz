@@ -1,12 +1,7 @@
-import { Post } from './../ts/types/types.d';
+import { PostResponse, PostDeleteResponse } from './../ts/interfaces/index';
 import { setBaseHeaders } from '../utils/headers';
 
 export const POSTS_URL = 'https://api.thecatapi.com/v1/images';
-
-interface PostResponse {
-  response: Post[] | []
-  postsError: string | null
-}
 
 export const getPosts = async (): Promise<PostResponse> => {
   try {
@@ -30,5 +25,28 @@ export const getPosts = async (): Promise<PostResponse> => {
     const response: [] = [];
     const postsError = 'System error';
     return { response, postsError };
+  }
+};
+
+export const deletePost = async (
+  imageId: string
+): Promise<PostDeleteResponse> => {
+  try {
+    const requestHeaders = setBaseHeaders();
+    const res = await fetch(`${POSTS_URL}/${imageId}`, {
+      headers: requestHeaders,
+      method: 'DELETE',
+    });
+    let postDeleteError;
+    if (!res.ok) {
+      postDeleteError = 'Posts error';
+    } else {
+      postDeleteError = null;
+    }
+    return { postDeleteError };
+  } catch (error) {
+    console.log(error);
+    const postDeleteError = 'System error';
+    return { postDeleteError };
   }
 };
