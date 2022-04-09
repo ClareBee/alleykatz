@@ -1,4 +1,5 @@
 import { Box, Flex, Text, Link as ChakraLink } from '@chakra-ui/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaCamera } from 'react-icons/fa';
@@ -7,7 +8,8 @@ import AppMenu from './Menu';
 
 const Navbar: React.FC = () => {
   const router = useRouter();
-  const hideUpload = router.asPath === '/upload';
+  const { data: session } = useSession();
+  const hideUpload = !session || router.asPath === '/upload';
   const hideHome = router.asPath === '/';
 
   return (
@@ -35,7 +37,6 @@ const Navbar: React.FC = () => {
           </Link>
         )}
       </Box>
-
       <AppMenu />
     </Flex>
   );

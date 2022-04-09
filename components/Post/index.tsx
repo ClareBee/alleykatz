@@ -10,6 +10,7 @@ import {
 } from '../../services/favourite';
 import { deletePost } from '../../services/posts';
 import { calculateVote, getUserVote } from '../../utils/helpers';
+import { useSession } from 'next-auth/react';
 
 const CatPost: React.FC<CatPostProps> = ({
   post: { url: imageUrl, id },
@@ -19,6 +20,8 @@ const CatPost: React.FC<CatPostProps> = ({
   mutatePosts,
   mutateVotes,
 }) => {
+  const { data: session } = useSession();
+
   const [error, setError] = useState(false);
 
   const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -90,7 +93,7 @@ const CatPost: React.FC<CatPostProps> = ({
           width="200px"
           borderRadius="inherit"
         >
-          <Button
+         {session && <Button
             position="absolute"
             right="2px"
             top="2px"
@@ -105,6 +108,7 @@ const CatPost: React.FC<CatPostProps> = ({
           >
             &times;
           </Button>
+}
           <Image
             layout="fill"
             src={imageUrl}
@@ -124,6 +128,7 @@ const CatPost: React.FC<CatPostProps> = ({
           Score:
           {postVotes && calculateVote(postVotes)}
         </Text>
+        {session && 
         <Stack
           direction="row"
           spacing={4}
@@ -149,6 +154,7 @@ const CatPost: React.FC<CatPostProps> = ({
             userVote={getUserVote(postVotes)}
           />
         </Stack>
+        }
         {error && 'Something went wrong'}
       </Stack>
     </Box>
