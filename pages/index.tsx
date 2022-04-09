@@ -1,52 +1,77 @@
 import type { NextPage } from 'next';
 import Posts from '../components/Posts';
 import ImageUploaderModal from '../components/ImageUploaderModal';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { PostsProps } from '../ts/interfaces';
+import { getPosts, POSTS_URL } from '../services/posts';
+import { getFavourites, FAVOURITE_URL } from '../services/favourite';
+import { getVotes, VOTES_URL } from '../services/vote';
+import { fetcher } from '../services/fetcher';
+import useSWR, { SWRConfig } from 'swr';
 
-const POSTS_URL = 'https://api.thecatapi.com/v1/images'
-
-const Home: NextPage<PostsProps> = ({ posts, favourites, votes }) => {
+const Home: NextPage<PostsProps> = ({
+  posts: postsProps,
+  favourites: favouritesProps,
+  votes: votesProps,
+  postsError,
+  votesError,
+  favouritesError,
+}) => {
+  const { data: posts, mutate: mutatePosts, error: postsSWRError } = useSWR(
+    `${POSTS_URL}?limit=100&include_vote=1&include_favourite=1`,
+    fetcher,
+    { fallbackData: postsProps, refreshInterval: 30000,
+    }
+  );
+  const { data: favourites, mutate: mutateFavourites, error: favouritesSWRError } = useSWR(
+    FAVOURITE_URL,
+    fetcher,
+    { fallbackData: favouritesProps }
+  );
+  const { data: votes, error: votesSWRError } = useSWR(VOTES_URL, fetcher, {
+    fallbackData: votesProps,
+    refreshInterval: 30000,
+  });
   return (
-    <>
-      <Posts posts={posts} favourites={favourites} votes={votes} />
-      <Flex width="100%" alignItems="center" justifyContent="flex-end" marginBottom="100px" marginTop="50px">
-      <ImageUploaderModal />
+    <SWRConfig value={{ provider: () => new Map()}}>
+      <Text>
+        {postsError} {votesError} {favouritesError}
+      </Text>
+      <Text>
+        {postsSWRError} {votesSWRError} {favouritesSWRError}
+      </Text>
 
+      <Posts posts={posts} favourites={favourites} votes={votes} mutateFavourites={mutateFavourites} mutatePosts={mutatePosts} />
+      <Flex
+        width="100%"
+        alignItems="center"
+        justifyContent="flex-end"
+        marginBottom="100px"
+        marginTop="50px"
+      >
+        <ImageUploaderModal />
       </Flex>
-    </>
+    </SWRConfig>
   );
 };
 
-// Called on every request
-export async function getServerSideProps() {
-  // TODO: refactor into service
-  const requestHeaders: HeadersInit = new Headers();
-  const query = `limit=100&include_vote=1&include_favourite=1`;
-  const key = process.env.NEXT_PUBLIC_API_KEY;
+// data for initial load
+export async function getStaticProps() {
+  const { response: posts, postsError } = await getPosts();
+  const { response: favourites, favouritesError } = await getFavourites('123');
+  const { response: votes, votesError } = await getVotes();
 
-  if (!key) {
-    throw new Error('Missing credentials');
-  }
-  requestHeaders.set('x-api-key', key);
-
-  const res = await fetch(`${POSTS_URL}?${query}`, {
-    headers: requestHeaders
-  })
-
-  const posts = await res.json()
-
-  const res2 = await fetch('https://api.thecatapi.com/v1/favourites?sub_id=123', {
-    headers: requestHeaders
-  })
-
-  const res3 = await fetch('https://api.thecatapi.com/v1/votes', {
-    headers: requestHeaders
-  })
-  const favourites = await res2.json()
-
-  const votes = await res3.json()
-  return { props: { posts, favourites, votes } }
+  return {
+    props: {
+      posts,
+      favourites,
+      votes,
+      postsError,
+      votesError,
+      favouritesError,
+    },
+    revalidate: 1,
+  };
 }
 
 export default Home;
