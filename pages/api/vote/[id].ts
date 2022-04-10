@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { POSTS_URL, VOTES_URL } from '../../../services/constants';
+import { VOTES_URL } from '../../../services/constants';
 import { setBaseHeaders } from '../../../utils/headers';
 
 type Data = {
@@ -18,14 +18,12 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         headers: requestHeaders,
         method: 'DELETE',
       });
-      console.log("API", APIresponse)
       if (APIresponse.ok) {
         return res.status(200).send({APIresponse});
       }
       return res.status(500).json({ voteDeleteError: 'Something went wrong' });
     } catch (error) {
       console.log(error);
-      const voteDeleteError = 'System error';
       return res.status(500).json({ voteDeleteError: 'Something went wrong' });
 
     }
@@ -55,7 +53,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       return res.status(500).json({ voteError: 'Something went wrong' });
     } catch (error) {
       console.log(error);
-      const postDeleteError = 'System error';
       return res.status(500).json({ voteError: 'Something went wrong' });
     }
   }

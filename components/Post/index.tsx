@@ -124,6 +124,7 @@ const CatPost: React.FC<CatPostProps> = ({
           <Image
             layout="fill"
             src={imageUrl}
+            objectFit="cover"
             alt="cat"
             placeholder="blur"
             blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="

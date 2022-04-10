@@ -19,13 +19,14 @@ const Navbar: React.FC = () => {
       direction={{ base: 'column', sm: 'row' }}
       justify="space-between"
       w="100%"
-      m={8}
-      p={8}
+      m={{base: 4, md: 6}}
+      p={{base: 4, md: 6}}
       bg={['primary.500']}
       color={['brand.700']}
     >
       {hideHome ? <Logo disabled /> : <Logo /> }
-      <Box fontSize="2xl">
+      <Flex w="50%" justify="space-between" direction={{ base: 'column-reverse', sm: 'row' }} align="center">
+      <Box fontSize="2xl" marginTop={{base: 6, md: 0}}>
         {hideUpload ? (
           <FaCamera fill="grey" />
         ) : (
@@ -38,6 +39,8 @@ const Navbar: React.FC = () => {
         )}
       </Box>
       <AppMenu />
+      </Flex>
+
     </Flex>
   );
 };

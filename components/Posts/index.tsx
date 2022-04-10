@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, Text } from '@chakra-ui/react';
+import { Flex, SimpleGrid } from '@chakra-ui/react';
 import { PostsProps } from '../../ts/interfaces';
 import { Favourite, Post, Vote } from '../../ts/types/types';
 import LoadingSkeleton from '../Loading';
@@ -46,7 +46,7 @@ const Posts: React.FC<PostsProps> = ({
     });
   };
   return (
-    <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} spacingX="40px" spacingY="20px">
+    <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} spacingX="40px" spacingY="20px" justifyContent="center">
       {posts ? formatPosts(posts) : <LoadingSkeleton />}
     </SimpleGrid>
   );

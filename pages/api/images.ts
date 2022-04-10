@@ -30,7 +30,6 @@ handler.post(async (req: any, res: any) => {
       const requestHeaders = setBaseHeaders(process.env.SECRET_API_KEY);
       requestHeaders.append('Content-Type', 'multipart/form-data');
 
-      console.log('req body', req.body);
       const subId = req.body.sub_id;
       const form = new FormData();
       const file = req.body.file.file;

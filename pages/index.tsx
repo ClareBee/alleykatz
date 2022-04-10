@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 import Posts from '../components/Posts';
 import ImageUploaderModal from '../components/ImageUploaderModal';
 import { Flex, useDisclosure } from '@chakra-ui/react';
-import { PostsProps } from '../ts/interfaces';
 import { fetcher } from '../services/fetcher';
 import useSWR, { SWRConfig } from 'swr';
 import ImageUploader from '../components/ImageUploader';
