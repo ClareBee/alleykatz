@@ -1,5 +1,5 @@
 import { calculateVote, getUserVote } from '../helpers';
-import { mixedVotes, testPostVotes } from './testData';
+import { mixedVotes, testPostVotes } from '../testHelpers/testData';
 
 
 describe('calculateVote', () => {

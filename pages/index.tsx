@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { clearError } from '../redux/errorSlice';
 
-const Home: NextPage<PostsProps> = () => {
+const Home: NextPage = () => {
   const { data: session } = useSession();
   const user = session?.user?.name;
   const {
