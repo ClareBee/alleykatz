@@ -11,8 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useSession } from 'next-auth/react';
 
-const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
-
 const ImageUploader: React.FC<ImageUploaderProps> = ({
   isModal,
   mutatePosts,
@@ -146,6 +144,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           <Image
             width="250px"
             height="250px"
+            objectFit="cover"
             src={previewImg.toString()}
             alt="preview"
           />
