@@ -1,15 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-const formidable = require('formidable');
 import nextConnect from 'next-connect';
-import middleware from '../../middleware/middleware';
-import fs from 'fs';
 var FormData = require('form-data');
+import fs from 'fs';
 import axios from 'axios';
 
+import middleware from '../../middleware/middleware';
 import { POSTS_URL } from '../../services/constants';
 import { setBaseHeaders } from '../../utils/headers';
-import { calcRelativeAxisPosition } from 'framer-motion/types/projection/geometry/delta-calc';
+
 const handler = nextConnect();
 
 handler.use(middleware);
@@ -25,7 +24,7 @@ export const config = {
   },
 };
 
-// TODO: fix - why can't I forward the file? message: "no 'remote_url' parameter passed.",
+// TODO: fix - why can't I forward the file? message: status: 400 bad request, "no 'remote_url' parameter passed.",
 handler.post(async (req: any, res: any) => {
   if (req.method === 'POST') {
     try {
@@ -39,7 +38,7 @@ handler.post(async (req: any, res: any) => {
       const readFile = fs.createReadStream(file.filepath);
       form.append('file', readFile, {
         contentType: 'image/png',
-        remote_url: 'foo',
+        mimeType: 'image/png'
       });
       form.append('sub_id', subId);
       const APIresponse = await axios.post(POSTS_URL, form, {
