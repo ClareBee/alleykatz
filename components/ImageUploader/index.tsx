@@ -71,7 +71,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
 
     try {
-      const requestHeaders = setBaseHeaders();
+      const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
       await fetch(UPLOAD_URL, {
         method: 'POST',
         mode: 'cors',

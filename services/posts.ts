@@ -5,7 +5,7 @@ export const POSTS_URL = 'https://api.thecatapi.com/v1/images';
 
 export const getPosts = async (): Promise<PostResponse> => {
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     const query = `limit=100&include_vote=1&include_favourite=1`;
     const res = await fetch(`${POSTS_URL}?${query}`, {
       headers: requestHeaders,
@@ -32,7 +32,7 @@ export const deletePost = async (
   imageId: string
 ): Promise<PostDeleteResponse> => {
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     const res = await fetch(`${POSTS_URL}/${imageId}`, {
       headers: requestHeaders,
       method: 'DELETE',

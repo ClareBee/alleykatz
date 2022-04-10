@@ -15,9 +15,9 @@ import { RootState } from '../redux/store';
 import { clearError } from '../redux/errorSlice';
 
 const Home: NextPage<PostsProps> = ({
-  posts: postsProps,
+  // posts: postsProps,
   votes: votesProps,
-  postsError,
+  // postsError,
   votesError,
 }) => {
   const { data: session } = useSession();
@@ -29,7 +29,7 @@ const Home: NextPage<PostsProps> = ({
   } = useSWR(
     `api/images`,
     fetcher,
-    { fallbackData: postsProps, refreshInterval: 30000 }
+    { refreshInterval: 30000 }
   );
   const {
     data: favourites,
@@ -53,7 +53,7 @@ const Home: NextPage<PostsProps> = ({
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
       {error && <ErrorMessage errorMessage={error} dismissError={dismissError}/>}
-      {(postsError || postsSWRError) && <ErrorMessage errorMessage={postsError} />}
+      {(postsSWRError) && <ErrorMessage errorMessage={postsSWRError} />}
       {(votesError || votesSWRError) && <ErrorMessage errorMessage={votesError} />}
       {(favouritesSWRError) && <ErrorMessage errorMessage={favouritesSWRError} />}
 
@@ -88,13 +88,13 @@ const Home: NextPage<PostsProps> = ({
 
 // data for initial load
 export async function getStaticProps() {
-  const postsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/images`);
-  const posts = await postsRes.json()
+  // const postsRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/images`);
+  // const posts = await postsRes.json()
   const { response: votes, votesError } = await getVotes();
 
   return {
     props: {
-      posts,
+      // posts,
       votes,
       // postsError,
       votesError,

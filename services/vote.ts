@@ -5,7 +5,7 @@ export const VOTES_URL = 'https://api.thecatapi.com/v1/votes';
 
 export const vote = async (imageId: string, value: number): Promise<VoteResponse> => {
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     requestHeaders.set('Content-Type', 'application/json');
 
     const data = {
@@ -37,7 +37,7 @@ export const vote = async (imageId: string, value: number): Promise<VoteResponse
 
 export const getVotes = async (): Promise<VotesResponse> => {
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     const res = await fetch(VOTES_URL, {
       headers: requestHeaders,
     });
@@ -61,7 +61,7 @@ export const getVotes = async (): Promise<VotesResponse> => {
 
 export const deleteVote = async (voteId: number) => {
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     const res = await fetch(`${VOTES_URL}/${voteId}`, {
       headers: requestHeaders,
       method: 'DELETE'

@@ -1,6 +1,6 @@
 import { setBaseHeaders } from "../utils/headers";
 
-const requestHeaders = setBaseHeaders();
+const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
 
 export const fetcher = (url: string) => fetch(url, {
   headers: requestHeaders,

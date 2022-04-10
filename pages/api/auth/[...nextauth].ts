@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 
 export default NextAuth({
   providers: [
-    process.env.VERCEL_ENV === "preview"
+    process.env.VERCEL_ENV !== "production"
     ? CredentialsProvider({
         name: "Credentials",
         credentials: {
