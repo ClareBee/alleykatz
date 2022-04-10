@@ -17,7 +17,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         headers: requestHeaders,
       });    
       const response = await APIresponse.json();
-      console.log(APIresponse)
       if(APIresponse.ok){
         return res.status(200).send(response);
       }

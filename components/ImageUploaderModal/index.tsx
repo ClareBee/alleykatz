@@ -12,8 +12,6 @@ import { BsFillPlusCircleFill } from 'react-icons/bs';
 import { ImageModalProps } from '../../ts/interfaces';
 import { FaCat } from 'react-icons/fa';
 
-const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
-
 const ImageModal: React.FC<ImageModalProps> = ({
   isOpen,
   onOpen,

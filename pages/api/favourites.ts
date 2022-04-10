@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { FAVOURITE_URL, POSTS_URL } from '../../services/constants';
+import { FAVOURITE_URL } from '../../services/constants';
 import { setBaseHeaders } from '../../utils/headers';
 
 type Data = {

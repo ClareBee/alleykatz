@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { useState, useRef, MouseEvent } from 'react';
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { setBaseHeaders } from '../../utils/headers';
 import { isFileSizeValid } from '../../utils/validateFile';
 import { FaCamera, FaCat } from 'react-icons/fa';
 import { ImageUploaderProps } from '../../ts/interfaces';
