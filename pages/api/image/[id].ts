@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { POSTS_URL } from '../../../services/posts';
+import { POSTS_URL } from '../../../services/constants';
 import { setBaseHeaders } from '../../../utils/headers';
 
 type Data = {

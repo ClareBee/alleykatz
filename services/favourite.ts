@@ -1,6 +1,6 @@
 import { setBaseHeaders } from "../utils/headers";
+import { FAVOURITE_URL } from "./constants";
 
-export const FAVOURITE_URL = 'https://api.thecatapi.com/v1/favourites';
 
 export const getFavourites = async (userId: string) => {
   try {
