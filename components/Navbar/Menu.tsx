@@ -16,10 +16,10 @@ const AppMenu = () => {
   const { data: session } = useSession();
   const sessionButton = () => {
     if (!session) {
-      return <Button onClick={() => signIn()}>Sign in</Button>;
+      return <Button onClick={() => signIn()} marginLeft="10px">Sign in</Button>;
     }
     return (
-      <Button onClick={() => signOut()} marginRight="10px" color="red.700">
+      <Button onClick={() => signOut()} marginLeft="10px" marginRight="10px" color="red.700">
         Sign out
       </Button>
     );

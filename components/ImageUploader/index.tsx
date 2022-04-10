@@ -40,8 +40,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       dispatch(setError('You can only upload one image at a time'));
     }
     const file = target.files[0];
+    console.log(file.size)
     if (file && !isFileSizeValid(file.size)) {
-      dispatch(setError('File size is too big'));
+      dispatch(setError('File too big'));
     }
     setSelectedImg(file);
 
