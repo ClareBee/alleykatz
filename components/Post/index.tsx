@@ -1,13 +1,10 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
 import { Box, Button, IconButton, Stack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { CatPostProps } from '../../ts/interfaces';
 import VoteButtons from './VoteButtons';
-import {
-  favourite as favouriteFn,
-  unfavourite,
-} from '../../services/favourite';
+
 import { calculateVote, getUserVote } from '../../utils/helpers';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
@@ -166,7 +163,7 @@ const CatPost: React.FC<CatPostProps> = ({
           <VoteButtons
             imageId={id}
             mutateVotes={mutateVotes}
-            userVote={getUserVote(postVotes)}
+            userVote={getUserVote(postVotes, session?.user?.name || '')}
           />
         </Stack>
         )}
