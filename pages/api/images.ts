@@ -38,13 +38,16 @@ handler.post(async (req: any, res: any) => {
       const readFile = fs.createReadStream(file.filepath);
       form.append('file', readFile, {
         contentType: 'image/png',
-        mimeType: 'image/png'
+        mimeType: 'image/png',
       });
       form.append('sub_id', subId);
-      const APIresponse = await axios.post(POSTS_URL, form, {
+      const APIresponse = await axios({
+        method: 'POST',
+        url: POSTS_URL,
+        data: form,
         headers: {
           ...form.getHeaders(),
-          'x-api-key': process.env.SECRET_API_KEY,
+          'x-api-key': process.env.SECRET_API_KEY || '',
         },
       });
       if (APIresponse) {
