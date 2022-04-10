@@ -6,7 +6,7 @@ import fs from 'fs';
 import axios from 'axios';
 
 import middleware from '../../middleware/middleware';
-import { POSTS_URL } from '../../services/constants';
+import { POSTS_URL, UPLOAD_URL } from '../../services/constants';
 import { setBaseHeaders } from '../../utils/headers';
 
 const handler = nextConnect();
@@ -24,7 +24,6 @@ export const config = {
   },
 };
 
-// TODO: fix - why can't I forward the file? message: status: 400 bad request, "no 'remote_url' parameter passed.",
 handler.post(async (req: any, res: any) => {
   if (req.method === 'POST') {
     try {
@@ -40,10 +39,11 @@ handler.post(async (req: any, res: any) => {
         contentType: 'image/png',
         mimeType: 'image/png',
       });
+
       form.append('sub_id', subId);
       const APIresponse = await axios({
         method: 'POST',
-        url: POSTS_URL,
+        url: UPLOAD_URL,
         data: form,
         headers: {
           ...form.getHeaders(),

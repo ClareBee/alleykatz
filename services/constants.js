@@ -6,4 +6,4 @@ export const VOTES_URL = `${BASE_URL}/votes`;
 
 export const FAVOURITE_URL = `${BASE_URL}/favourites`;
 
-export const UPLOAD_URL = `${BASE_URL}/upload`;
+export const UPLOAD_URL = `${BASE_URL}/images/upload`;
