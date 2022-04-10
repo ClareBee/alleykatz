@@ -32,12 +32,12 @@ const CatPost: React.FC<CatPostProps> = ({
     if (!id) {
       return;
     }
-    const { postDeleteError } = await deletePost(id);
-    if (postDeleteError) {
-      console.log(postDeleteError);
-      dispatch(setError('We ran into problems deleting the image. Try again!'));
-    } else {
+    const response = await fetch(`/api/image/${id}`, { method: 'DELETE'});
+    console.log('response in post', response)
+    if (response.ok) {
       mutatePosts();
+    } else {
+      dispatch(setError('We ran into problems deleting the image. Try again!'));
     }
   };
 

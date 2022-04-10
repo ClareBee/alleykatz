@@ -20,7 +20,10 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       });
       const response = await APIresponse.json();
       console.log('me', response);
-      return res.status(200).send(response);
+      if(APIresponse.ok){
+        return res.status(200).send(response);
+      }
+      return res.status(500).send({ postsError: 'something went wrong'})
     } catch (error) {
       console.error(error);
       const err = 'something went wrong';
