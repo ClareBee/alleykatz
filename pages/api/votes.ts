@@ -12,7 +12,7 @@ type Data = {
 export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if (req.method === 'GET') {
     try {
-      const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
+      const requestHeaders = setBaseHeaders(process.env.SECRET_API_KEY);
       const APIresponse = await fetch(VOTES_URL, {
         headers: requestHeaders,
       });    

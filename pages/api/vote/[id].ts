@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       const { id } = req.query;
       const { value, userId } = req.body;
 
-      const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
+      const requestHeaders = setBaseHeaders(process.env.SECRET_API_KEY);
       requestHeaders.set('Content-Type', 'application/json');
       const data = {
         image_id: id,
