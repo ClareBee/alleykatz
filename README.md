@@ -20,3 +20,5 @@ SECRET_PASSWORD= // for faking a login
 
 `npm run dev`
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+![Screenshot](cats.png)
