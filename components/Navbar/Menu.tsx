@@ -13,11 +13,11 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 const AppMenu = () => {
   const { data: session } = useSession();
-  console.log(session)
   const sessionButton = () => {
     if(!session) {
     return <Button onClick={() => signIn()}>Sign in</Button>;
     }
+    return (<Button onClick={() => signOut()} marginRight="10px" color="red.700">Sign out</Button>)
   };
 
   return (
@@ -38,10 +38,6 @@ const AppMenu = () => {
                 mr="12px"
               />
               <span>Signed in as {session?.user?.name}</span>
-            </MenuItem>
-            <MenuItem minH="48px">
-            <Button onClick={() => signOut()} width="100%" color="red.700">Sign out</Button>
-              
             </MenuItem>
           </MenuList>
         </Menu>

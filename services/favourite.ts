@@ -1,10 +1,10 @@
 import { setBaseHeaders } from "../utils/headers";
+import { FAVOURITE_URL } from "./constants";
 
-export const FAVOURITE_URL = 'https://api.thecatapi.com/v1/favourites';
 
 export const getFavourites = async (userId: string) => {
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     const res = await fetch(`${FAVOURITE_URL}?sub_id=${userId}`, {
       headers: requestHeaders
     });
@@ -27,10 +27,10 @@ export const getFavourites = async (userId: string) => {
 };
 
 export const unfavourite = async (favouriteId: number) => {
-  const requestHeaders = setBaseHeaders()
+  const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY)
   requestHeaders.set('Content-Type', 'application/json');
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     requestHeaders.set('Content-Type', 'application/json');
     const res = await fetch(`${FAVOURITE_URL}/${favouriteId}`, {
       method: 'DELETE',
@@ -53,9 +53,9 @@ export const unfavourite = async (favouriteId: number) => {
   }
 };
 
-export const favourite = async (imageId: string, userId = '123') => {
+export const favourite = async (imageId: string, userId: string) => {
   try {
-    const requestHeaders = setBaseHeaders();
+    const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     requestHeaders.set('Content-Type', 'application/json');
     const data = {
       image_id: imageId,

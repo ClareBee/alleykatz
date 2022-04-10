@@ -3,8 +3,12 @@ import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 export default NextAuth({
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
   providers: [
-    process.env.VERCEL_ENV === "preview"
+    process.env.VERCEL_ENV !== "production"
     ? CredentialsProvider({
         name: "Credentials",
         credentials: {
@@ -20,7 +24,7 @@ export default NextAuth({
             id: 1,
             name: "Clare Bee",
             email: "cbee@example.com",
-            image: "https://i.pravatar.cc/150?u=jdoe@example.com",
+            image: "https://avatars.githubusercontent.com/u/10653492?v=4",
           }
         },
       })

@@ -1,14 +1,10 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
 import { Box, Button, IconButton, Stack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { CatPostProps } from '../../ts/interfaces';
 import VoteButtons from './VoteButtons';
-import {
-  favourite as favouriteFn,
-  unfavourite,
-} from '../../services/favourite';
-import { deletePost } from '../../services/posts';
+
 import { calculateVote, getUserVote } from '../../utils/helpers';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
@@ -32,12 +28,11 @@ const CatPost: React.FC<CatPostProps> = ({
     if (!id) {
       return;
     }
-    const { postDeleteError } = await deletePost(id);
-    if (postDeleteError) {
-      console.log(postDeleteError);
-      dispatch(setError('We ran into problems deleting the image. Try again!'));
-    } else {
+    const response = await fetch(`/api/image/${id}`, { method: 'DELETE' });
+    if (response.ok) {
       mutatePosts();
+    } else {
+      dispatch(setError('We ran into problems deleting the image. Try again!'));
     }
   };
 
@@ -46,8 +41,10 @@ const CatPost: React.FC<CatPostProps> = ({
     if (!favourite?.id) {
       return;
     }
-    const { unfavouriteError } = await unfavourite(favourite.id);
-    if (unfavouriteError) {
+    const response = await fetch(`/api/favourite/${favourite.id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
       dispatch(setError('We ran into problems unliking the image. Try again!'));
     } else {
       mutateFavourites();
@@ -63,8 +60,15 @@ const CatPost: React.FC<CatPostProps> = ({
     if (session?.user?.name) {
       user = session.user.name;
     }
-    const { favouriteError } = await favouriteFn(id, user);
-    if (favouriteError) {
+    const response = await fetch(`/api/favourite/${id}`, {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      }),
+      body: JSON.stringify({ userId: user }),
+    });
+    if (!response.ok) {
       dispatch(setError('We ran into problems liking the image. Try again!'));
     } else {
       mutateFavourites();
@@ -137,31 +141,31 @@ const CatPost: React.FC<CatPostProps> = ({
           {postVotes && calculateVote(postVotes)}
         </Text>
         {session && (
-          <Stack
-            direction="row"
-            spacing={4}
-            justifyContent="space-between"
-            marginTop="10px"
-          >
-            {!favourite?.id ? (
-              <IconButton
-                aria-label="Like this cat"
-                icon={<FaRegHeart />}
-                onClick={(e) => handleFavourite(e)}
-              />
-            ) : (
-              <IconButton
-                aria-label="Unlike this cat"
-                icon={<FaHeart fill="red" />}
-                onClick={(e) => handleUnfavourite(e)}
-              />
-            )}
-            <VoteButtons
-              imageId={id}
-              mutateVotes={mutateVotes}
-              userVote={getUserVote(postVotes)}
+        <Stack
+          direction="row"
+          spacing={4}
+          justifyContent="space-between"
+          marginTop="10px"
+        >
+          {!favourite?.id ? (
+            <IconButton
+              aria-label="Like this cat"
+              icon={<FaRegHeart />}
+              onClick={(e) => handleFavourite(e)}
             />
-          </Stack>
+          ) : (
+            <IconButton
+              aria-label="Unlike this cat"
+              icon={<FaHeart fill="red" />}
+              onClick={(e) => handleUnfavourite(e)}
+            />
+          )}
+          <VoteButtons
+            imageId={id}
+            mutateVotes={mutateVotes}
+            userVote={getUserVote(postVotes, session?.user?.name)}
+          />
+        </Stack>
         )}
       </Stack>
     </Box>

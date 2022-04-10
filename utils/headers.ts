@@ -1,6 +1,5 @@
-export const setBaseHeaders = (): Headers => {
+export const setBaseHeaders = (key: string | undefined): Headers => {
   const requestHeaders: HeadersInit = new Headers();
-  const key = process.env.NEXT_PUBLIC_API_KEY;
   if (!key) {
     console.log('Missing credentials');
     return requestHeaders;

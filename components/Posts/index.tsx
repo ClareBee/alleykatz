@@ -1,6 +1,7 @@
 import { Flex, SimpleGrid, Text } from '@chakra-ui/react';
 import { PostsProps } from '../../ts/interfaces';
 import { Favourite, Post, Vote } from '../../ts/types/types';
+import LoadingSkeleton from '../Loading';
 import CatPost from '../Post';
 
 const Posts: React.FC<PostsProps> = ({
@@ -13,7 +14,7 @@ const Posts: React.FC<PostsProps> = ({
 }) => {
   const getPostVotes = (votes: Vote[], postId: string) => {
     if(!votes) { return [] };
-    return votes.filter(vote => vote.image_id === postId)
+    return votes?.filter(vote => vote.image_id === postId)
   }
 
   const formatPosts = (posts: Post[]) => {
@@ -46,7 +47,7 @@ const Posts: React.FC<PostsProps> = ({
   };
   return (
     <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} spacingX="40px" spacingY="20px">
-      {posts ? formatPosts(posts) : 'No Posts available'}
+      {posts ? formatPosts(posts) : <LoadingSkeleton />}
     </SimpleGrid>
   );
 };

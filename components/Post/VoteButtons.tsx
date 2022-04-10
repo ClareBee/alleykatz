@@ -2,9 +2,9 @@ import { Box, IconButton } from '@chakra-ui/react';
 import { MouseEvent } from 'react';
 import { BiDownvote, BiUpvote } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
-import { deleteVote, vote } from '../../services/vote';
 import { VoteProps } from '../../ts/interfaces';
 import { setError } from '../../redux/errorSlice';
+import { useSession } from 'next-auth/react';
 
 const VoteButtons: React.FC<VoteProps> = ({
   imageId,
@@ -12,6 +12,7 @@ const VoteButtons: React.FC<VoteProps> = ({
   userVote,
 }) => {
   const dispatch = useDispatch();
+  const { data: session } = useSession();
 
   const handleVote = async (
     e: MouseEvent<HTMLButtonElement>,
@@ -19,22 +20,34 @@ const VoteButtons: React.FC<VoteProps> = ({
   ) => {
     e.preventDefault();
     if (userVote?.id && userVote?.vote === value) {
-      const { voteError } = await deleteVote(userVote.id);
-      if (voteError) {
+      const response = await fetch(`/api/vote/${userVote.id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
         dispatch(setError('Something went wrong with your vote'));
       } else {
         mutateVotes();
       }
     } else {
-      const { voteError } = await vote(imageId, value);
-      if (voteError) {
+      const form = {
+        value: value,
+        userId: session?.user?.name,
+      };
+      const response = await fetch(`/api/vote/${imageId}`, {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        }),
+        body: JSON.stringify(form),
+      });
+      if (!response.ok) {
         dispatch(setError('Something went wrong with your vote'));
       } else {
         mutateVotes();
       }
     }
   };
-
   return (
     <>
       <Box>
