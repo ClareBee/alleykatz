@@ -163,7 +163,7 @@ const CatPost: React.FC<CatPostProps> = ({
           <VoteButtons
             imageId={id}
             mutateVotes={mutateVotes}
-            userVote={getUserVote(postVotes, session?.user?.name || '')}
+            userVote={getUserVote(postVotes, session?.user?.name)}
           />
         </Stack>
         )}

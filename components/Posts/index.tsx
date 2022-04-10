@@ -14,7 +14,7 @@ const Posts: React.FC<PostsProps> = ({
 }) => {
   const getPostVotes = (votes: Vote[], postId: string) => {
     if(!votes) { return [] };
-    return votes.filter(vote => vote.image_id === postId)
+    return votes?.filter(vote => vote.image_id === postId)
   }
 
   const formatPosts = (posts: Post[]) => {
