@@ -1,6 +1,6 @@
 # AlleyKatz 🐱
 - An image gallery of cats that, when signed in, you can 'like', vote for/against, and upload
-- You can only delete your own cats 🗑️
+- You can only delete your own cats or strays 🗑️
 
 
 ## Getting Started 🚀
