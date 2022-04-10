@@ -21,7 +21,7 @@ const CatPost: React.FC<CatPostProps> = ({
   const { data: session } = useSession();
   const dispatch = useDispatch();
 
-  const postIsUsers = () => sub_id === session?.user?.name;
+  const postIsUsers = () => sub_id === session?.user?.name || sub_id === null;
 
   const handleDelete = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

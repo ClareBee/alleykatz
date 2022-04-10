@@ -19,28 +19,32 @@ const Navbar: React.FC = () => {
       direction={{ base: 'column', sm: 'row' }}
       justify="space-between"
       w="100%"
-      m={{base: 4, md: 6}}
-      p={{base: 4, md: 6}}
+      m={{ base: 4, md: 6 }}
+      p={{ base: 4, md: 6 }}
       bg={['primary.500']}
       color={['brand.700']}
     >
-      {hideHome ? <Logo disabled /> : <Logo /> }
-      <Flex w="50%" justify="space-between" direction={{ base: 'column-reverse', sm: 'row' }} align="center">
-      <Box fontSize="2xl" marginTop={{base: 6, md: 0}}>
-        {hideUpload ? (
-          <FaCamera fill="grey" />
-        ) : (
-          <Link href="/upload" passHref>
-            <ChakraLink display="flex" alignItems="center">
-              <FaCamera />
-              <Text ml="10px">Upload</Text>
-            </ChakraLink>
-          </Link>
-        )}
-      </Box>
-      <AppMenu />
+      {hideHome ? <Logo disabled /> : <Logo />}
+      <Flex
+        maxWidth="60%"
+        justify="space-between"
+        direction={{ base: 'column-reverse', sm: 'row' }}
+        align="center"
+      >
+        <Box fontSize="2xl" marginTop={{ base: 6, md: 0 }}>
+          {hideUpload ? (
+            <FaCamera fill="grey" />
+          ) : (
+            <Link href="/upload" passHref>
+              <ChakraLink display="flex" alignItems="center">
+                <FaCamera />
+                <Text ml="10px">Upload</Text>
+              </ChakraLink>
+            </Link>
+          )}
+        </Box>
+        <AppMenu />
       </Flex>
-
     </Flex>
   );
 };

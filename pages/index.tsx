@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   const error = useSelector((state: RootState) => state.error.error);
 
   const dismissError = () => dispatch(clearError());
-
+  console.log(posts)
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
       {error && (
