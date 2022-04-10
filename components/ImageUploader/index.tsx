@@ -64,10 +64,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       return;
     }
     setIsLoading(true);
-    // const formData = {
-    //   file: selectedImg,
-    //   sub_id: session?.user?.name || ''
-    // }
 
     const formData = new FormData();
     formData.append('file', selectedImg)
@@ -76,11 +72,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       await fetch('/api/images', {
         method: 'POST',
-        // mode: 'cors',
-        // credentials: 'same-origin',
-        // headers: new Headers({
-        //   'Content-Type': 'multipart/form-data',
-        // }),
         body: formData,
       }).then((res) => {
         if (!res.ok) {

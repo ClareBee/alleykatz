@@ -1,8 +1,9 @@
-export const POSTS_URL = 'https://api.thecatapi.com/v1/images';
+const BASE_URL = 'https://api.thecatapi.com/v1';
 
-export const VOTES_URL = 'https://api.thecatapi.com/v1/votes';
+export const POSTS_URL = `${BASE_URL}/images`;
 
-export const FAVOURITE_URL = 'https://api.thecatapi.com/v1/favourites';
+export const VOTES_URL = `${BASE_URL}/votes`;
 
+export const FAVOURITE_URL = `${BASE_URL}/favourites`;
 
-export const UPLOAD_URL = 'https://api.thecatapi.com/v1/images/upload';
+export const UPLOAD_URL = `${BASE_URL}/upload`;

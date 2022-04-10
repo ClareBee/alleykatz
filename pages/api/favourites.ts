@@ -13,8 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if (req.method === 'GET') {
     try {
       const { sub_id } = req.query;
-      console.log('sub', sub_id)
-
       const requestHeaders = setBaseHeaders(process.env.SECRET_API_KEY);
       const APIresponse = await fetch(`${FAVOURITE_URL}?sub_id=${sub_id}`, {
         headers: requestHeaders,

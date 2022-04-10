@@ -10,7 +10,6 @@ type Data = {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  console.log('hitting the endpoint')
   if (req.method === 'DELETE') {
     try {
       const { id: favouriteId } = req.query;
@@ -23,7 +22,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         mode: 'cors',
         credentials: 'same-origin',
       });
-      console.log("API", APIresponse)
       if (APIresponse.ok) {
         return res.status(200).send({APIresponse});
       }
@@ -37,7 +35,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if(req.method === 'POST') {
     try {
       const { id: imageId } = req.query;
-      console.log('image', imageId)
       const { userId } = req.body;
 
       const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);

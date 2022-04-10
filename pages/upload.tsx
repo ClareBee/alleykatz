@@ -10,11 +10,11 @@ const Update: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if(!session) {
-  //     router.push('/')
-  //   }
-  // }, [session, router])
+  useEffect(() => {
+    if(!session) {
+      router.push('/')
+    }
+  }, [session, router])
 
   return (<Stack width="80%" margin="0 auto" color="brand.700">
     <ImageUploader />

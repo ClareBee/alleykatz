@@ -23,7 +23,6 @@ const VoteButtons: React.FC<VoteProps> = ({
       const response = await fetch(`/api/vote/${userVote.id}`, {
         method: 'DELETE',
       });
-      console.log('response', response);
       if (!response.ok) {
         dispatch(setError('Something went wrong with your vote'));
       } else {
@@ -42,7 +41,6 @@ const VoteButtons: React.FC<VoteProps> = ({
         }),
         body: JSON.stringify(form),
       });
-      console.log(response);
       if (!response.ok) {
         dispatch(setError('Something went wrong with your vote'));
       } else {
@@ -50,7 +48,6 @@ const VoteButtons: React.FC<VoteProps> = ({
       }
     }
   };
-  console.log('userVote', userVote)
   return (
     <>
       <Box>

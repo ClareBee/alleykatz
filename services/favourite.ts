@@ -53,7 +53,7 @@ export const unfavourite = async (favouriteId: number) => {
   }
 };
 
-export const favourite = async (imageId: string, userId = '123') => {
+export const favourite = async (imageId: string, userId: string) => {
   try {
     const requestHeaders = setBaseHeaders(process.env.NEXT_PUBLIC_API_KEY);
     requestHeaders.set('Content-Type', 'application/json');
